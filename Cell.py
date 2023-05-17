@@ -1,4 +1,4 @@
 from neuron import h
 
 class Cell():
-    pass
+    print("Hello World")
