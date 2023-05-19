@@ -28,7 +28,7 @@ class Cell():
         # or h.Section(name='dendrite', cell=self)
 
         
-        raise NotImplementedError("Sections have not been created.")
+        raise NotImplementedError("Sections were not created.")
 
     def define_geometry(self):
         # Set the 3D geometry of the cell.
@@ -42,5 +42,6 @@ class Cell():
         netcon = h.NetCon(self.soma(0.5)._ref_v, self.soma)
         netcon.threshold = threshold
         return netcon
+
 
     
