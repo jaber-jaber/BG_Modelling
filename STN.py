@@ -1,4 +1,4 @@
 from neuron import h
 
-class STN(Cell):
+class STN():
     pass
