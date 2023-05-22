@@ -1,5 +1,15 @@
 from neuron import h
 
+"""
+    Base cell class implementation with parameters & code derived from:
+
+    Terman, D., Rubin, J.E., Yew, A.C. and Wilson, C.J., 2002. 
+	"Activity patterns in a model for the subthalamopallidal 
+	network of the basal ganglia." 
+	Journal of Neuroscience, 22(7), pp.2963-2976.
+
+"""
+
 class Cell():
     # Cell template. All other cells in this model will inherit from Cell.
 
@@ -20,7 +30,7 @@ class Cell():
         self.create_sections()
         self.define_biophysics()
         self.define_geometry()
-        self.build_subsets
+        self.build_subsets()
 
     def create_sections(self):
         # Sections in the form of:
@@ -43,5 +53,36 @@ class Cell():
         netcon.threshold = threshold
         return netcon
 
+    def get_spikes(self):
+        spiketrain = []
+        return spiketrain.netconvecs_to_listoflists(self.t_vec, self.id_vec)
 
-    
+    def current_clamp(self):
+        stim = h.IClamp(self.soma(self.loc))
+        stim.delay = self.delay
+        stim.dur = self.dur
+        stim.amp = self.amp
+        
+        return stim
+
+    def build_subsets(self):
+        self.all = h.SectionList()
+        self.all.wholetree(sec=self.soma)
+        
+    def set_position(self, x, y, z):
+        for sec in self.all:
+            for i in range(int(h.n3d())):
+                h.pt3dchange(i, \
+                    x-self.x3d(i), \
+                    y-self.y3d(i), \
+                    z-self.z3d(i), \
+                    h.diam3d(i))
+        self.x = x; self.y = y; self.z = z;
+
+    def shape_3D(self):
+        slength = self.soma.L
+        self.soma.push()
+        h.pt3dclear()
+        h.pt3dadd(0, 0, 0, self.soma.diam)
+        h.pt3dadd(slength, 0, 0, self.soma.diam)
+        h.pop_section()
