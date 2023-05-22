@@ -2,7 +2,7 @@ from neuron import h
 from matplotlib import pyplot
 import numpy
 
-ef set_recording_vectors(cell):
+def set_recording_vectors(cell):
 	"""Set soma, dendrite, and time recording vectors on the cell.
 	#
 	:param cell: Cell to record from.
