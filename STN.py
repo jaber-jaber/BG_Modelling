@@ -23,7 +23,4 @@ class STN(Cell):
         for sec in self.all:
             sec.Ra = 100
             sec.cm = 100
-
-        # Insert membrane currents
-        
         
