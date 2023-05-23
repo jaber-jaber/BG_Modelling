@@ -42,3 +42,49 @@ def show_output(soma_v_vec, t_vec, clear_fig=True):
 	#pyplot.axis([0,1000,-100,100])
 	pyplot.show()
 #
+
+def spike_plot(v_vec,t_vec,name,vmin=-80,vmax=20,xtic=2,ytic=100):
+	'''
+	Takes an array of membrane potentials and outputs a spike plot figure.
+	'''
+	# Initialize image parameters
+	vrange = vmax-vmin
+	#
+	timeS = [x for x in numpy.arange(0,int(t_vec[-1]+1),h.dt)]
+	timeD = numpy.arange(0,int(t_vec[-1]+1),1)
+	#
+	timeID = [timeS.index(t) for t in timeD[:-1]]
+	#
+	ht = len(v_vec)
+	w = len(timeID)
+	step = int(len(t_vec)/w)
+	ytic = int(max(times)*xtic/(2*ht))
+	traces = [[numpy.mean([v_vec[i][x] for x in range(j,j+step,1)]) for j in timeID] for i in range(ht)]
+	scaleData = []
+	preimage = []
+	#
+	# Scale data
+	for i in range(ht):
+		scaleData.append([])
+		for j in range(w):
+			if traces[i][j]>vmax:
+				scaleData[i].append(0)
+			elif traces[i][j]<vmin:
+				scaleData[i].append(1)
+			else:
+				scaleData[i].append(-(traces[i][j]-vmax)/vrange)
+			#
+		#
+	# Create image	
+	for i in range(ht*ytic):
+		preimage.append([])
+		for j in range(w*xtic):
+			preimage[i].append(scaleData[i/ytic][j/xtic])
+		#
+	#
+	image = numpy.array(preimage)
+	fig = pyplot.figure()	
+	pyplot.imshow(image,cmap=pyplot.cm.gray)
+	pyplot.imsave(name,image,cmap=pyplot.cm.gray)
+	fig.show()
+#
