@@ -30,7 +30,6 @@ class Cell():
         self.create_sections()
         self.define_biophysics()
         self.define_geometry()
-        self.build_subsets()
 
     def create_sections(self):
         # Sections in the form of:
@@ -65,9 +64,9 @@ class Cell():
         
         return stim
 
-    def build_subsets(self):
-        self.all = h.SectionList()
-        self.all.wholetree(sec=self.soma)
+    #def build_subsets(self):
+       # self.all = h.SectionList()
+       # self.all.wholetree(sec=self.soma)
         
     def set_position(self, x, y, z):
         for sec in self.all:

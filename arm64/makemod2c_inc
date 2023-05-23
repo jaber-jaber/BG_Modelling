@@ -1,0 +1,32 @@
+./Destexhe_AMPA.c: ../Destexhe_AMPA.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\\n"
+	(cd "..";  MODLUNIT=$(NRNUNITS) $(NOCMODL) "Destexhe_AMPA.mod" -o "/Users/jaberjaber/BG_Modelling/arm64")
+
+./Destexhe_AMPA.o: ./Destexhe_AMPA.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\\n"
+	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
+
+./Destexhe_GABAa.c: ../Destexhe_GABAa.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\\n"
+	(cd "..";  MODLUNIT=$(NRNUNITS) $(NOCMODL) "Destexhe_GABAa.mod" -o "/Users/jaberjaber/BG_Modelling/arm64")
+
+./Destexhe_GABAa.o: ./Destexhe_GABAa.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\\n"
+	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
+
+./Otsuka_STN.c: ../Otsuka_STN.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\\n"
+	(cd "..";  MODLUNIT=$(NRNUNITS) $(NOCMODL) "Otsuka_STN.mod" -o "/Users/jaberjaber/BG_Modelling/arm64")
+
+./Otsuka_STN.o: ./Otsuka_STN.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\\n"
+	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
+
+./myions.c: ../myions.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\\n"
+	(cd "..";  MODLUNIT=$(NRNUNITS) $(NOCMODL) "myions.mod" -o "/Users/jaberjaber/BG_Modelling/arm64")
+
+./myions.o: ./myions.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\\n"
+	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
+
