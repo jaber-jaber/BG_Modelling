@@ -2,7 +2,7 @@ from neuron import h
 from matplotlib import pyplot
 import numpy
 
-def set_recording_vectors(cell):
+def set_recording_vectors(Cell):
 	"""Set soma, dendrite, and time recording vectors on the cell.
 	#
 	:param cell: Cell to record from.
@@ -10,7 +10,7 @@ def set_recording_vectors(cell):
 	"""
 	soma_v_vec = h.Vector()   # Membrane potential vector at soma
 	t_vec = h.Vector()        # Time stamp vector
-	soma_v_vec.record(cell.soma(0.5)._ref_v)
+	soma_v_vec.record(Cell.soma(0.5)._ref_v)
 	t_vec.record(h._ref_t)
 	#
 	return soma_v_vec, t_vec
