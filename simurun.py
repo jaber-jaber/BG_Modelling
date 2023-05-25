@@ -58,7 +58,7 @@ def spike_plot(v_vec,t_vec,name,vmin=-80,vmax=20,xtic=2,ytic=100):
 	ht = len(v_vec)
 	w = len(timeID)
 	step = int(len(t_vec)/w)
-	ytic = int(max(timeD)*xtic/(2*ht))
+	ytic = int(max(timeS)*xtic/(2*ht))
 	traces = [[numpy.mean([v_vec[i][x] for x in range(j,j+step,1)]) for j in timeID] for i in range(ht)]
 	scaleData = []
 	preimage = []
@@ -75,7 +75,7 @@ def spike_plot(v_vec,t_vec,name,vmin=-80,vmax=20,xtic=2,ytic=100):
 				scaleData[i].append(-(traces[i][j]-vmax)/vrange)
 			#
 		#
-	# Create image	
+	# Creates the image	
 	for i in range(ht*ytic):
 		preimage.append([])
 		for j in range(w*xtic):
