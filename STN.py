@@ -1,5 +1,6 @@
 from neuron import h
 from Cell import Cell
+import textwrap
 
 class STN(Cell):
     def __init__(self, amp=0, dur=1e9, loc=0.5, delay=0):
@@ -23,18 +24,18 @@ class STN(Cell):
     def define_biophysics(self):
         self.soma.Ra = 200
         self.soma.cm = 1
+        print('Biophysics defined.')
 
         # Area = 10000 um2
     
         # Defining current properties
         self.soma.insert('stn')
 
-        self.soma.gnabar_stn = 49e-3 # S/cm2
-        self.soma.gkdrbar_stn = 57e-3
-        self.soma_gkcabar_stn = 0.7e-3
-        self.soma.gkabar_stn = 5e-3
-        self.soma.gcalbar_stn = 15e-3
-        self.soma.gcatbar_stn = 5e-3
-        self.soma.kca_stn = 2
-        self.soma_gl_stn = 0.29e-3
-
+        # self.soma.gnabar_stn = 49e-3 # S/cm2
+        # self.soma.gkdrbar_stn = 57e-3
+        # self.soma.gkcabar_stn = 1e-3 * 10
+        # # self.soma.gkabar_stn = 5e-3
+        # self.soma.gcalbar_stn = 15e-3 * 10
+        # self.soma.gcatbar_stn = 5e-3 * 10
+        # self.soma.kca_stn = 2
+        # self.soma.gl_stn = 0.35e-3

@@ -19,7 +19,7 @@ NEURON {
 	RANGE gcalbar, eca, c_inf, d1_inf, d2_inf, tau_c, tau_d1, tau_d2, icaT, icaL  : L-type ca current
 	RANGE gkabar, ek, a_inf, tau_a, b_inf, tau_b, ikA      : A-type K current
 	RANGE gkcabar, ek, r_inf, ikAHP                        : ca dependent AHP K current
-      RANGE kca, vol, caGain                                 : ca dynamics
+    RANGE kca, vol, caGain                                 : ca dynamics
 }
 
 
@@ -35,7 +35,7 @@ UNITS {
 PARAMETER {
 	R = 8.31441 (Gas constant)
 	T 		(Absolute temp)
-	celsius		(degC)
+	celsius	(degC)
 
 :Fast Na channel
 	gnabar   = 49e-3 (S/cm2) 
@@ -71,9 +71,9 @@ PARAMETER {
 
 :Ca dynamics
 	kca   = 2        (1/ms)
-      area
-      vol = 3.355e-11  (L) :~20um radius sphere
-      caGain = .1
+    area
+    vol = 3.355e-11  (L) :~20um radius sphere
+    caGain = .1
 
 :T-type ca current
 	gcatbar   = 5e-3 (S/cm2)  
@@ -160,7 +160,7 @@ ASSIGNED {
 	tau_h	(ms)
 	m_inf
 	tau_m	(ms)
-	ena           (mV)   := 60  
+	ena     (mV)
 
 :Delayed rectifier
 	n_inf

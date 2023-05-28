@@ -107,10 +107,10 @@ class Ring:
         self._connect_cells()
         # add stimulus
         self._netstim = h.NetStim()
-        self._netstim.number = 1
+        self._netstim.number = 100
         self._netstim.start = stim_t
         self._nc = h.NetCon(self._netstim, self.cells[0].syn)
-        self._nc.delay = stim_delay
+        self._nc.delay = stim_delay * ms
         self._nc.weight[0] = stim_w
 
     def _create_cells(self, N, r):
@@ -136,20 +136,25 @@ def create_n_BallAndStick(n, r):
         cells.append(BallAndStick(i, h.cos(theta) * r, h.sin(theta) * r, 0, theta))
     return cells
 
-my_cells = create_n_BallAndStick(11, 50)
-ring = Ring(N=5)
+
+ring = Ring(N=100)
 
 shape_window = h.PlotShape(True)
 shape_window.show(0)
 
 t = h.Vector().record(h._ref_t)
 h.finitialize(-65 * mV)
-h.continuerun(100)
+h.continuerun(500)
 
+
+plt.figure(1)
 plt.plot(t, ring.cells[0].soma_v)
+plt.ylabel('Membrane Potential (mV)')
+plt.xlabel('Time (ms)')
 plt.show()
 
-plt.figure()
-for i, cell in enumerate(ring.cells):
-    plt.vlines(list(cell.spike_times), i + 0.5, i + 1.5)
-plt.show()
+# plt.figure(2)
+# for i, cell in enumerate(ring.cells):
+#     plt.vlines(list(cell.spike_times), i + 0.5, i + 1.5)
+
+# plt.show()
