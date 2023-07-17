@@ -18,24 +18,28 @@ class STN(Cell):
 
     def define_geometry(self):
         self.soma.L = self.soma.diam = 60
-        self.soma.nseg = 1
         self.shape_3D()
 
     def define_biophysics(self):
         self.soma.Ra = 200
+        self.soma.nseg = 1
         self.soma.cm = 1
-        print('Biophysics defined.')
 
         # Area = 10000 um2
     
-        # Defining current properties
+        # Defining electrophysiological properties
         self.soma.insert('stn')
 
-        # self.soma.gnabar_stn = 49e-3 # S/cm2
-        # self.soma.gkdrbar_stn = 57e-3
-        # self.soma.gkcabar_stn = 1e-3 * 10
-        # # self.soma.gkabar_stn = 5e-3
-        # self.soma.gcalbar_stn = 15e-3 * 10
-        # self.soma.gcatbar_stn = 5e-3 * 10
-        # self.soma.kca_stn = 2
-        # self.soma.gl_stn = 0.35e-3
+        # Rhythmic Spontaneous activity is primarily driven by
+        self.soma.gnabar_stn = 49e-3 # Fast sodium channel
+        self.soma.gkdrbar_stn = 57e-3 # Delayed rectifier K channel (repolarization)
+        self.soma.gkabar_stn = 5e-3 # A-type potassium channel for delaying depolarization
+
+        # Freq of spontaneous activity depends on
+        self.soma.gkcabar_stn = 1e-3 # AHP Ca2+-dependent K channel
+        self.soma.gcalbar_stn = 15e-3 # Long-lasting calcium Ca2+ currents
+        self.soma.gcatbar_stn = 5e-3 # Low threshold T-type Ca2+ currents
+
+        # Ca dynamics and leak current
+        self.soma.kca_stn = 2 # Ca removal rate
+        self.soma.gl_stn = 0.29e-3 # Leak current
