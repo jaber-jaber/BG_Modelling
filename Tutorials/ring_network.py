@@ -90,7 +90,7 @@ class Ring:
     """
 
     def __init__(
-        self, N=5, stim_w=0.04, stim_t=9, stim_delay=1, syn_w=0.01, syn_delay=5, r=50
+        self, N=5, stim_w=0.04, stim_t=9, stim_delay=1, syn_w=0.01, syn_delay=5, r=100
     ):
         """
         :param N: Number of cells.
@@ -107,7 +107,7 @@ class Ring:
         self._connect_cells()
         # add stimulus
         self._netstim = h.NetStim()
-        self._netstim.number = 100
+        self._netstim.number = 10
         self._netstim.start = stim_t
         self._nc = h.NetCon(self._netstim, self.cells[0].syn)
         self._nc.delay = stim_delay * ms
@@ -144,7 +144,7 @@ shape_window.show(0)
 
 t = h.Vector().record(h._ref_t)
 h.finitialize(-65 * mV)
-h.continuerun(500)
+h.continuerun(1000)
 
 
 plt.figure(1)

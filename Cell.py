@@ -64,19 +64,21 @@ class Cell():
         
         return stim
 
-    #def build_subsets(self):
-       # self.all = h.SectionList()
-       # self.all.wholetree(sec=self.soma)
+    def build_subsets(self):
+       self.all = h.SectionList()
+       self.all.wholetree(sec=self.soma)
         
     def set_position(self, x, y, z):
         for sec in self.all:
             for i in range(int(h.n3d())):
                 h.pt3dchange(i, \
-                    x-self.x3d(i), \
-                    y-self.y3d(i), \
-                    z-self.z3d(i), \
+                    x-self.x+h.x3d(i), \
+                    y-self.y+h.y3d(i), \
+                    z-self.z+h.z3d(i), \
                     h.diam3d(i))
-        self.x = x; self.y = y; self.z = z;
+        self.x = x
+        self.y = y
+        self.z = z
 
     def shape_3D(self):
         slength = self.soma.L
