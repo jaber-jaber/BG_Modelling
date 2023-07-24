@@ -30,6 +30,8 @@ class STN(Cell):
         # Defining electrophysiological properties
         self.soma.insert('stn')
 
+        # Otsuka gAHP = 0.001
+
         # Rhythmic Spontaneous activity is primarily driven by
         self.soma.gnabar_stn = 49e-3 # Fast sodium channel
         self.soma.gkdrbar_stn = 57e-3 # Delayed rectifier K channel (repolarization)
@@ -43,3 +45,4 @@ class STN(Cell):
         # Ca dynamics and leak current
         self.soma.kca_stn = 2 # Ca removal rate
         self.soma.gl_stn = 0.29e-3 # Leak current
+        
