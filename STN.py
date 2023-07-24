@@ -33,17 +33,18 @@ class STN(Cell):
         # Otsuka gAHP = 0.001
         # Hahn and McIntyre gAHP = 0.007
 
+
         # Rhythmic Spontaneous activity is primarily driven by
         self.soma.gnabar_stn = 49e-3 # Fast sodium channel
         self.soma.gkdrbar_stn = 57e-3 # Delayed rectifier K channel (repolarization)
         self.soma.gkabar_stn = 5e-3 # A-type potassium channel for delaying depolarization
 
         # Freq of spontaneous activity depends on
-        self.soma.gkcabar_stn = 1e-3 # AHP Ca2+-dependent K channel
+        self.soma.gkcabar_stn = 1e-3 # AHP Ca2+-dependent K channel, changed to Otsuka's.
         self.soma.gcalbar_stn = 15e-3 # Long-lasting calcium Ca2+ currents
         self.soma.gcatbar_stn = 5e-3 # Low threshold T-type Ca2+ currents
 
         # Ca dynamics and leak current
         self.soma.kca_stn = 2 # Ca removal rate
-        self.soma.gl_stn = 0.29e-3 # Leak current
+        self.soma.gl_stn = 0.35e-3 # Leak current, changed to Otsuka's. Original value: 0.29e-3 S/cm^2
         
