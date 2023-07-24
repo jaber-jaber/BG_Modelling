@@ -29,4 +29,4 @@ plt.plot(time/1000, soma_v, color='k')
 plt.ylim(-60)
 plt.xlabel("Time (s)")
 plt.ylabel("Membrane Potential (mV)")
-plt.show()
+plt.show() # Commenting
