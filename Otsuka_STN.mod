@@ -34,8 +34,8 @@ UNITS {
 
 PARAMETER {
 	R = 8.31441 (Gas constant)
-	T 		(Absolute temp)
-	celsius	(degC)
+	T	(Absolute temp)
+	celsius (degC)
 
 :Fast Na channel
 	gnabar   = 49e-3 (S/cm2) 
@@ -73,7 +73,8 @@ PARAMETER {
 	kca   = 2        (1/ms)
     area
     vol = 3.355e-11  (L) :~20um radius sphere
-    caGain = .1
+    caGain = 0.00000518215 : alpha = 1/ZF where Z is valence of Ca ions and F is Faraday's constant.
+	: This is based on Otsuka's formula. If using original, change to 0.1.
 
 :T-type ca current
 	gcatbar   = 5e-3 (S/cm2)  
@@ -98,10 +99,10 @@ PARAMETER {
 	gcalbar   = 15e-3 (S/cm2) 
 	theta_c = -30.6 (mV)
 	theta_d1 = -60 (mV)
-	theta_d2 = 0.1e-3 (mM)
+	theta_d2 = 0.1 (mM) : 0.1e-3
 	k_c = -5 (mV)
 	k_d1 = 7.5 (mV)
-	k_d2 = 0.02e-3 (mM)
+	k_d2 = 0.02 (mM) : 0.02e-3
 	tau_c0 = 45 (ms)
 	tau_c1 = 10 (ms)
 	tau_d10 = 400 (ms)
@@ -115,7 +116,7 @@ PARAMETER {
 	sig_d11 = -15 (mV)
 	sig_d12 = 20 (mV)
 
-	tau_d2 = 130 (ms)
+	tau_d2 = 130 (ms)1
 
 :A current
 	gkabar  = 5e-3	(S/cm2)  
@@ -136,8 +137,8 @@ PARAMETER {
 
 :AHP current (Ca dependent K current)
 	gkcabar   = 1e-3 (S/cm2) 
-	theta_r = 0.17e-3 (mM)
-	k_r = -0.08e-3 (mM)
+	theta_r = 0.17 (mM) : 0.17e-3
+	k_r = -0.08 (mM)
 	tau_r = 2 (ms)
 	power_r = 2
 	
@@ -242,7 +243,11 @@ DERIVATIVE states {
 	d2' = (d2_inf - d2)/tau_d2
 
       :(Ica mA/cm2)*(area um2)*(1e-8 cm2/um2)*(1e-3 A/mA)*(1/(2*F) mol/C)*(1e-3 sec/msec)*(1e3 mMol/mol)(1/volume 1/L)=(mM/msec)
-	cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)
+	:cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)
+
+	cai' = -((ica)/(2*FARADAY)) - (kca*cai) : Changed to Otsuka's Cai derivative equation. 
+	: Comment this and uncomment previous line to return to default.
+
 :	cai' = -ica*area*somaAreaFrac*1e-11/(2*FARADAY*vol*shellVolFrac) + (5e-6 - cai)/kca
 
 	a' = (a_inf - a)/tau_a
