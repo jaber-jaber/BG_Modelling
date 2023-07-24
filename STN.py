@@ -31,6 +31,7 @@ class STN(Cell):
         self.soma.insert('stn')
 
         # Otsuka gAHP = 0.001
+        # Hahn and McIntyre gAHP = 0.007
 
         # Rhythmic Spontaneous activity is primarily driven by
         self.soma.gnabar_stn = 49e-3 # Fast sodium channel
