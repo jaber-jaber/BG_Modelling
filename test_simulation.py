@@ -19,9 +19,6 @@ rec_netcon.record(recording_vec)
 # To check the mechanisms and point processes present in the STN soma:
 # print(stn.soma.psection()) # Tells you all the density mech values
 
-for con in rec_netcon:
-    print(con)
-
 # Insert this if you want to obtain results of depolarization current injection into cell.
 """ stim = STN_cell.loc = STN_cell.current_clamp()
 stim.delay = 1
