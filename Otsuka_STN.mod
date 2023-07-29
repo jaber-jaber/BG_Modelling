@@ -11,15 +11,16 @@ NEURON {
 	USEION ca READ cai, cao WRITE ica, cai
 	USEION k READ ki, ko WRITE ik
 	USEION na READ nai, nao WRITE ina
+	RANGE cai0, cao0
 	RANGE ina, ik, ica
 	RANGE gnabar, ena, m_inf, h_inf, tau_h, tau_m		 : fast sodium
 	RANGE gkdrbar, ek, n_inf, tau_n, ikD                   : delayed K rectifier
 	RANGE gl, el, ilk                                      : leak
 	RANGE gcatbar, eca, p_inf, tau_p, q_inf, tau_q	       : T-type ca current
 	RANGE gcalbar, eca, c_inf, d1_inf, d2_inf, tau_c, tau_d1, tau_d2, icaT, icaL  : L-type ca current
-	RANGE gkabar, ek, a_inf, tau_a, b_inf, tau_b, ikA      : A-type K current
+	RANGE gkabar, ek, a_inf, tau_a, b_inf, tau_b, ikA  : A-type K current
 	RANGE gkcabar, ek, r_inf, ikAHP                        : ca dependent AHP K current
-    RANGE kca, vol, caGain                                 : ca dynamics
+      RANGE kca, vol, caGain                                 : ca dynamics
 }
 
 
@@ -34,8 +35,10 @@ UNITS {
 
 PARAMETER {
 	R = 8.31441 (Gas constant)
-	T	(Absolute temp)
-	celsius (degC)
+	T 		(Absolute temp)
+	celsius	(degC)
+	cai0 (mM)
+	cao0 (mM)
 
 :Fast Na channel
 	gnabar   = 49e-3 (S/cm2) 
@@ -71,10 +74,9 @@ PARAMETER {
 
 :Ca dynamics
 	kca   = 2        (1/ms)
-    area
-    vol = 3.355e-11  (L) :~20um radius sphere
-    caGain = 0.00000518215 : alpha = 1/ZF where Z is valence of Ca ions and F is Faraday's constant.
-	: This is based on Otsuka's formula. If using original, change to 0.1.
+      area
+      vol = 3.355e-11  (L) :~20um radius sphere
+      caGain = 0.1
 
 :T-type ca current
 	gcatbar   = 5e-3 (S/cm2)  
@@ -99,10 +101,10 @@ PARAMETER {
 	gcalbar   = 15e-3 (S/cm2) 
 	theta_c = -30.6 (mV)
 	theta_d1 = -60 (mV)
-	theta_d2 = 0.1 (mM) : 0.1e-3
+	theta_d2 = 0.1e-3 (mM) : from paper, 100 nM inactivation Ca concentration
 	k_c = -5 (mV)
 	k_d1 = 7.5 (mV)
-	k_d2 = 0.02 (mM) : 0.02e-3
+	k_d2 = 0.02e-3 (mM)
 	tau_c0 = 45 (ms)
 	tau_c1 = 10 (ms)
 	tau_d10 = 400 (ms)
@@ -116,7 +118,7 @@ PARAMETER {
 	sig_d11 = -15 (mV)
 	sig_d12 = 20 (mV)
 
-	tau_d2 = 130 (ms)1
+	tau_d2 = 130 (ms)
 
 :A current
 	gkabar  = 5e-3	(S/cm2)  
@@ -137,8 +139,8 @@ PARAMETER {
 
 :AHP current (Ca dependent K current)
 	gkcabar   = 1e-3 (S/cm2) 
-	theta_r = 0.17 (mM) : 0.17e-3
-	k_r = -0.08 (mM)
+	theta_r = 0.17e-3 (mM)
+	k_r = -0.08e-3 (mM)
 	tau_r = 2 (ms)
 	power_r = 2
 	
@@ -161,7 +163,7 @@ ASSIGNED {
 	tau_h	(ms)
 	m_inf
 	tau_m	(ms)
-	ena     (mV)
+	ena           (mV)   := 60  
 
 :Delayed rectifier
 	n_inf
@@ -244,11 +246,9 @@ DERIVATIVE states {
 
       :(Ica mA/cm2)*(area um2)*(1e-8 cm2/um2)*(1e-3 A/mA)*(1/(2*F) mol/C)*(1e-3 sec/msec)*(1e3 mMol/mol)(1/volume 1/L)=(mM/msec)
 	:cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)
-
-	cai' = -((ica)/(2*FARADAY)) - (kca*cai) : Changed to Otsuka's Cai derivative equation. 
-	: Comment this and uncomment previous line to return to default.
-
 :	cai' = -ica*area*somaAreaFrac*1e-11/(2*FARADAY*vol*shellVolFrac) + (5e-6 - cai)/kca
+
+	cai' = ((-ica*area)*(1/(2*FARADAY)) - kca*cai)
 
 	a' = (a_inf - a)/tau_a
 	b' = (b_inf - b)/tau_b
@@ -276,6 +276,9 @@ INITIAL {
 	b = b_inf   
 
 	r = r_inf 
+
+	cai = cai0
+	cao = cao0
 }
 
 PROCEDURE evaluate_fct(v(mV)) { 

@@ -30,6 +30,9 @@ class STN(Cell):
         # Defining electrophysiological properties
         self.soma.insert('stn')
 
+        self.soma.cao0_stn = 2
+        self.soma.cai0_stn = 5e-6
+
         # Rhythmic Spontaneous activity is primarily driven by
         self.soma.gnabar_stn = 49e-3 # Fast sodium channel
         self.soma.gkdrbar_stn = 57e-3 # Delayed rectifier K channel (repolarization)
