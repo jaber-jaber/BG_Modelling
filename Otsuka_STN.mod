@@ -11,7 +11,6 @@ NEURON {
 	USEION ca READ cai, cao WRITE ica, cai
 	USEION k READ ki, ko WRITE ik
 	USEION na READ nai, nao WRITE ina
-	RANGE cai0, cao0
 	RANGE ina, ik, ica
 	RANGE gnabar, ena, m_inf, h_inf, tau_h, tau_m		 : fast sodium
 	RANGE gkdrbar, ek, n_inf, tau_n, ikD                   : delayed K rectifier
@@ -37,8 +36,6 @@ PARAMETER {
 	R = 8.31441 (Gas constant)
 	T 		(Absolute temp)
 	celsius	(degC)
-	cai0 (mM)
-	cao0 (mM)
 
 :Fast Na channel
 	gnabar   = 49e-3 (S/cm2) 
@@ -74,9 +71,9 @@ PARAMETER {
 
 :Ca dynamics
 	kca   = 2        (1/ms)
-      area
-      vol = 3.355e-11  (L) :~20um radius sphere
-      caGain = 0.1
+    area
+    vol = 3.355e-11  (L) :~20um radius sphere
+    caGain = 0.1
 
 :T-type ca current
 	gcatbar   = 5e-3 (S/cm2)  
@@ -101,7 +98,7 @@ PARAMETER {
 	gcalbar   = 15e-3 (S/cm2) 
 	theta_c = -30.6 (mV)
 	theta_d1 = -60 (mV)
-	theta_d2 = 0.1e-3 (mM) : from paper, 100 nM inactivation Ca concentration
+	theta_d2 = 0.1e-3 (mM)
 	k_c = -5 (mV)
 	k_d1 = 7.5 (mV)
 	k_d2 = 0.02e-3 (mM)
@@ -163,7 +160,7 @@ ASSIGNED {
 	tau_h	(ms)
 	m_inf
 	tau_m	(ms)
-	ena           (mV)   := 60  
+	ena (mV)
 
 :Delayed rectifier
 	n_inf
@@ -217,7 +214,7 @@ BREAKPOINT {
 	ena = -(R*T)/FARADAY*log(nai/nao)*1000
 	ek = (R*T)/FARADAY*log(ko/ki)*1000
 	eca = -(R*T)/FARADAY*log(cai/cao)*1000/2
-	:printf("%f %f %f\n", ena, ek, eca)
+	printf("%f %f %f\n", ena, ek, eca)
 
 	ina   = gnabar * m*m*m*h * (v - ena)
 	ikD   = gkdrbar * n^4 * (v - ek)
@@ -245,11 +242,10 @@ DERIVATIVE states {
 	d2' = (d2_inf - d2)/tau_d2
 
       :(Ica mA/cm2)*(area um2)*(1e-8 cm2/um2)*(1e-3 A/mA)*(1/(2*F) mol/C)*(1e-3 sec/msec)*(1e3 mMol/mol)(1/volume 1/L)=(mM/msec)
-	:cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)
+	cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)
 :	cai' = -ica*area*somaAreaFrac*1e-11/(2*FARADAY*vol*shellVolFrac) + (5e-6 - cai)/kca
 
-	cai' = ((-ica*area)*(1/(2*FARADAY)) - kca*cai)
-
+	:cai' = (-ica*area)/(2*FARADAY) - kca*cai
 	a' = (a_inf - a)/tau_a
 	b' = (b_inf - b)/tau_b
 
@@ -276,9 +272,6 @@ INITIAL {
 	b = b_inf   
 
 	r = r_inf 
-
-	cai = cai0
-	cao = cao0
 }
 
 PROCEDURE evaluate_fct(v(mV)) { 

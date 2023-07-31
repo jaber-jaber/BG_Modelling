@@ -28,11 +28,16 @@ class STN(Cell):
         # Area = 10000 um2
     
         # Defining electrophysiological properties
+        self.soma.insert('myions')
         self.soma.insert('stn')
 
-        self.soma.cao0_stn = 2
-        self.soma.cai0_stn = 5e-6
-
+        h("cai0_ca_ion = 5e-6") # Initial intracellular Ca concentration
+        h("cao0_ca_ion = 2") # Initial extracellular Ca concentration
+        h("ki0_k_ion = 105")
+        h("ko0_k_ion = 3")
+        h("nao0_na_ion = 108")
+        h("nai0_na_ion = 10")
+        
         # Rhythmic Spontaneous activity is primarily driven by
         self.soma.gnabar_stn = 49e-3 # Fast sodium channel
         self.soma.gkdrbar_stn = 57e-3 # Delayed rectifier K channel (repolarization)
