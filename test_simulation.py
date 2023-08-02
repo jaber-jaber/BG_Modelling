@@ -1,19 +1,15 @@
 from neuron import h, gui
 from STN import STN
 from neuron.units import ms, mV, sec
-from simurun import set_recording_vectors, simulate, show_output
 import matplotlib.pyplot as plt
 import numpy as np
+import textwrap
 
-exec(open("./STN.py").read())
 h.load_file("stdrun.hoc")
 
 # Defining initial conditions
 h.celsius = 33
-h.dt = 0.05
-h.tstop = 10000
-h.steps_per_ms = 20
-h.v_init = -58
+h.tstop = 1000
 
 # These values are in H&M model mosinit.hoc file.
 
@@ -28,6 +24,7 @@ rec_netcon.record(recording_vec)
 
 # To check the mechanisms and point processes present in the STN soma:
 print(stn.soma.psection()) # Tells you all the density mech values
+# To find out all h attributes, run: print(textwrap.fill(", ".join(dir(h))))
 
 # Insert this if you want to obtain results of depolarization current injection into cell.
 # stim = STN_cell.loc = STN_cell.current_clamp()
@@ -48,11 +45,9 @@ soma_v = h.Vector().record(stn.soma()._ref_v)
 time = h.Vector().record(h._ref_t)
 
 # Normalising the simulation duration
-total_dur = 1
-c_duration = 104.1
 
-h.finitialize()
-h.continuerun(total_dur * sec)
+h.finitialize(-58 * mV)
+h.continuerun(h.tstop)
 
 # Calculate Frequency
 # rec_data = np.array(recording_vec)

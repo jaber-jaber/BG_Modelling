@@ -73,7 +73,7 @@ PARAMETER {
 	kca   = 2        (1/ms)
     area
     vol = 3.355e-11  (L) :~20um radius sphere
-    caGain = 0.1
+    caGain = .1
 
 :T-type ca current
 	gcatbar   = 5e-3 (S/cm2)  
@@ -214,8 +214,8 @@ BREAKPOINT {
 	ena = -(R*T)/FARADAY*log(nai/nao)*1000
 	ek = (R*T)/FARADAY*log(ko/ki)*1000
 	eca = -(R*T)/FARADAY*log(cai/cao)*1000/2
-	printf("%f %f %f\n", ena, ek, eca)
-	printf("%f\n", T)
+	:printf("%f %f %f\n", ena, ek, eca)
+	:printf("%f %f\n", ki, ko)
 
 	ina   = gnabar * m*m*m*h * (v - ena)
 	ikD   = gkdrbar * n^4 * (v - ek)
