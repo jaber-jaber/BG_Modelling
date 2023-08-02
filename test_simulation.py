@@ -9,7 +9,13 @@ exec(open("./STN.py").read())
 h.load_file("stdrun.hoc")
 
 # Defining initial conditions
-h.celsius = 39.65 # T = 273 + 39.65 - 9.5 = 303.15 K or 30 deg Cel
+h.celsius = 33
+h.dt = 0.05
+h.tstop = 10000
+h.steps_per_ms = 20
+h.v_init = -58
+
+# These values are in H&M model mosinit.hoc file.
 
 # Defining the cell
 stn = STN()
@@ -45,7 +51,7 @@ time = h.Vector().record(h._ref_t)
 total_dur = 1
 c_duration = 104.1
 
-h.finitialize(-60 * mV)
+h.finitialize()
 h.continuerun(total_dur * sec)
 
 # Calculate Frequency

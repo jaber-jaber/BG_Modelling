@@ -1113,6 +1113,8 @@ static double _nrn_current(double* _p, Datum* _ppvar, Datum* _thread, NrnThread*
    ena = - ( R * T ) / FARADAY * log ( nai / nao ) * 1000.0 ;
    ek = ( R * T ) / FARADAY * log ( ko / ki ) * 1000.0 ;
    eca = - ( R * T ) / FARADAY * log ( cai / cao ) * 1000.0 / 2.0 ;
+   printf ( "%f %f %f\n" , ena , ek , eca ) ;
+   printf ( "%f\n" , T ) ;
    ina = gnabar * m * m * m * h * ( v - ena ) ;
    ikD = gkdrbar * pow( n , 4.0 ) * ( v - ek ) ;
    ikA = gkabar * a * a * b * ( v - ek ) ;
@@ -1293,7 +1295,7 @@ static const char* nmodl_file_text =
   "	RANGE gl, el, ilk                                      : leak\n"
   "	RANGE gcatbar, eca, p_inf, tau_p, q_inf, tau_q	       : T-type ca current\n"
   "	RANGE gcalbar, eca, c_inf, d1_inf, d2_inf, tau_c, tau_d1, tau_d2, icaT, icaL  : L-type ca current\n"
-  "	RANGE gkabar, ek, a_inf, tau_a, b_inf, tau_b, ikA      : A-type K current\n"
+  "	RANGE gkabar, ek, a_inf, tau_a, b_inf, tau_b, ikA  : A-type K current\n"
   "	RANGE gkcabar, ek, r_inf, ikAHP                        : ca dependent AHP K current\n"
   "      RANGE kca, vol, caGain                                 : ca dynamics\n"
   "}\n"
@@ -1311,7 +1313,7 @@ static const char* nmodl_file_text =
   "PARAMETER {\n"
   "	R = 8.31441 (Gas constant)\n"
   "	T 		(Absolute temp)\n"
-  "	celsius		(degC)\n"
+  "	celsius	(degC)\n"
   "\n"
   ":Fast Na channel\n"
   "	gnabar   = 49e-3 (S/cm2) \n"
@@ -1347,9 +1349,9 @@ static const char* nmodl_file_text =
   "\n"
   ":Ca dynamics\n"
   "	kca   = 2        (1/ms)\n"
-  "      area\n"
-  "      vol = 3.355e-11  (L) :~20um radius sphere\n"
-  "      caGain = .1\n"
+  "    area\n"
+  "    vol = 3.355e-11  (L) :~20um radius sphere\n"
+  "    caGain = 0.1\n"
   "\n"
   ":T-type ca current\n"
   "	gcatbar   = 5e-3 (S/cm2)  \n"
@@ -1436,12 +1438,12 @@ static const char* nmodl_file_text =
   "	tau_h	(ms)\n"
   "	m_inf\n"
   "	tau_m	(ms)\n"
-  "	ena           (mV)   := 60  \n"
+  "	ena (mV)\n"
   "\n"
   ":Delayed rectifier\n"
   "	n_inf\n"
   "	tau_n	(ms)\n"
-  "	ek         (mV) := -90\n"
+  "	ek (mV) := -90\n"
   "\n"
   ":ca T current\n"
   "	p_inf\n"
@@ -1490,7 +1492,8 @@ static const char* nmodl_file_text =
   "	ena = -(R*T)/FARADAY*log(nai/nao)*1000\n"
   "	ek = (R*T)/FARADAY*log(ko/ki)*1000\n"
   "	eca = -(R*T)/FARADAY*log(cai/cao)*1000/2\n"
-  "	:printf(\"%f %f %f\\n\", ena, ek, eca)\n"
+  "	printf(\"%f %f %f\\n\", ena, ek, eca)\n"
+  "	printf(\"%f\\n\", T)\n"
   "\n"
   "	ina   = gnabar * m*m*m*h * (v - ena)\n"
   "	ikD   = gkdrbar * n^4 * (v - ek)\n"
@@ -1519,8 +1522,8 @@ static const char* nmodl_file_text =
   "\n"
   "      :(Ica mA/cm2)*(area um2)*(1e-8 cm2/um2)*(1e-3 A/mA)*(1/(2*F) mol/C)*(1e-3 sec/msec)*(1e3 mMol/mol)(1/volume 1/L)=(mM/msec)\n"
   "	cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)\n"
+  "	: Converting mA to A/uA\n"
   ":	cai' = -ica*area*somaAreaFrac*1e-11/(2*FARADAY*vol*shellVolFrac) + (5e-6 - cai)/kca\n"
-  "\n"
   "	a' = (a_inf - a)/tau_a\n"
   "	b' = (b_inf - b)/tau_b\n"
   "\n"

@@ -3,7 +3,7 @@ from Cell import Cell
 import textwrap
 
 class STN(Cell):
-    def __init__(self, amp=0, dur=1e9, loc=0.5, delay=0):
+    def __init__(self, amp=0, dur=1e12, loc=0.5, delay=0):
         super(STN, self).__init__() # Functions are inherited from class Cell. If undefined here, 
         # will act as functions that are defined in Cell.
 
@@ -24,7 +24,7 @@ class STN(Cell):
         self.soma.Ra = 200
         self.soma.nseg = 1
         self.soma.cm = 1
-
+        
         # Area = 10000 um2
     
         # Defining electrophysiological properties

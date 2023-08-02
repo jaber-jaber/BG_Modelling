@@ -369,7 +369,6 @@ _first = 0;
 #if NMODL_TEXT
 static const char* nmodl_filename = "/Users/jaberjaber/BG_Modelling/myions.mod";
 static const char* nmodl_file_text = 
-  "\n"
   ":used to set nai, nao, ki, ko so that NEURON's default values are not used\n"
   "\n"
   "NEURON {\n"

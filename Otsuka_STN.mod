@@ -165,7 +165,7 @@ ASSIGNED {
 :Delayed rectifier
 	n_inf
 	tau_n	(ms)
-	ek         (mV) := -90
+	ek (mV) := -90
 
 :ca T current
 	p_inf
@@ -215,6 +215,7 @@ BREAKPOINT {
 	ek = (R*T)/FARADAY*log(ko/ki)*1000
 	eca = -(R*T)/FARADAY*log(cai/cao)*1000/2
 	printf("%f %f %f\n", ena, ek, eca)
+	printf("%f\n", T)
 
 	ina   = gnabar * m*m*m*h * (v - ena)
 	ikD   = gkdrbar * n^4 * (v - ek)
@@ -243,9 +244,8 @@ DERIVATIVE states {
 
       :(Ica mA/cm2)*(area um2)*(1e-8 cm2/um2)*(1e-3 A/mA)*(1/(2*F) mol/C)*(1e-3 sec/msec)*(1e3 mMol/mol)(1/volume 1/L)=(mM/msec)
 	cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)
+	: Converting mA to A/uA
 :	cai' = -ica*area*somaAreaFrac*1e-11/(2*FARADAY*vol*shellVolFrac) + (5e-6 - cai)/kca
-
-	:cai' = (-ica*area)/(2*FARADAY) - kca*cai
 	a' = (a_inf - a)/tau_a
 	b' = (b_inf - b)/tau_b
 
