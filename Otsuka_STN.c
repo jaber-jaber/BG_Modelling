@@ -1113,6 +1113,7 @@ static double _nrn_current(double* _p, Datum* _ppvar, Datum* _thread, NrnThread*
    ena = - ( R * T ) / FARADAY * log ( nai / nao ) * 1000.0 ;
    ek = ( R * T ) / FARADAY * log ( ko / ki ) * 1000.0 ;
    eca = - ( R * T ) / FARADAY * log ( cai / cao ) * 1000.0 / 2.0 ;
+   printf ( "%f %f %f\n" , ena , ek , eca ) ;
    ina = gnabar * m * m * m * h * ( v - ena ) ;
    ikD = gkdrbar * pow( n , 4.0 ) * ( v - ek ) ;
    ikA = gkabar * a * a * b * ( v - ek ) ;
@@ -1490,7 +1491,7 @@ static const char* nmodl_file_text =
   "	ena = -(R*T)/FARADAY*log(nai/nao)*1000\n"
   "	ek = (R*T)/FARADAY*log(ko/ki)*1000\n"
   "	eca = -(R*T)/FARADAY*log(cai/cao)*1000/2\n"
-  "	:printf(\"%f %f %f\\n\", ena, ek, eca)\n"
+  "	printf(\"%f %f %f\\n\", ena, ek, eca)\n"
   "	:printf(\"%f %f\\n\", ki, ko)\n"
   "\n"
   "	ina   = gnabar * m*m*m*h * (v - ena)\n"
@@ -1520,8 +1521,11 @@ static const char* nmodl_file_text =
   "\n"
   "      :(Ica mA/cm2)*(area um2)*(1e-8 cm2/um2)*(1e-3 A/mA)*(1/(2*F) mol/C)*(1e-3 sec/msec)*(1e3 mMol/mol)(1/volume 1/L)=(mM/msec)\n"
   "	cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)\n"
+  "\n"
+  "	:cai' = 337.1*((-ica)/(2*FARADAY) - kca*cai)\n"
   "	: Converting mA to A/uA\n"
   ":	cai' = -ica*area*somaAreaFrac*1e-11/(2*FARADAY*vol*shellVolFrac) + (5e-6 - cai)/kca\n"
+  "\n"
   "	a' = (a_inf - a)/tau_a\n"
   "	b' = (b_inf - b)/tau_b\n"
   "\n"

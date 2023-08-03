@@ -214,7 +214,7 @@ BREAKPOINT {
 	ena = -(R*T)/FARADAY*log(nai/nao)*1000
 	ek = (R*T)/FARADAY*log(ko/ki)*1000
 	eca = -(R*T)/FARADAY*log(cai/cao)*1000/2
-	:printf("%f %f %f\n", ena, ek, eca)
+	printf("%f %f %f\n", ena, ek, eca)
 	:printf("%f %f\n", ki, ko)
 
 	ina   = gnabar * m*m*m*h * (v - ena)
@@ -244,8 +244,11 @@ DERIVATIVE states {
 
       :(Ica mA/cm2)*(area um2)*(1e-8 cm2/um2)*(1e-3 A/mA)*(1/(2*F) mol/C)*(1e-3 sec/msec)*(1e3 mMol/mol)(1/volume 1/L)=(mM/msec)
 	cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)
+
+	:cai' = 337.1*((-ica)/(2*FARADAY) - kca*cai)
 	: Converting mA to A/uA
 :	cai' = -ica*area*somaAreaFrac*1e-11/(2*FARADAY*vol*shellVolFrac) + (5e-6 - cai)/kca
+
 	a' = (a_inf - a)/tau_a
 	b' = (b_inf - b)/tau_b
 
