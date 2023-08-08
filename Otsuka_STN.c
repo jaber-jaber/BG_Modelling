@@ -48,62 +48,62 @@ extern double hoc_Exp(double);
 #define dt _nt->_dt
 #define gnabar _p[0]
 #define gnabar_columnindex 0
-#define gkdrbar _p[1]
-#define gkdrbar_columnindex 1
-#define gl _p[2]
-#define gl_columnindex 2
-#define el _p[3]
-#define el_columnindex 3
-#define kca _p[4]
-#define kca_columnindex 4
-#define vol _p[5]
-#define vol_columnindex 5
-#define caGain _p[6]
-#define caGain_columnindex 6
-#define gcatbar _p[7]
-#define gcatbar_columnindex 7
-#define gcalbar _p[8]
-#define gcalbar_columnindex 8
-#define tau_d2 _p[9]
-#define tau_d2_columnindex 9
-#define gkabar _p[10]
-#define gkabar_columnindex 10
-#define gkcabar _p[11]
-#define gkcabar_columnindex 11
-#define ina _p[12]
-#define ina_columnindex 12
-#define ik _p[13]
-#define ik_columnindex 13
-#define ikD _p[14]
-#define ikD_columnindex 14
-#define ikA _p[15]
-#define ikA_columnindex 15
-#define ikAHP _p[16]
-#define ikAHP_columnindex 16
-#define ica _p[17]
-#define ica_columnindex 17
-#define icaT _p[18]
-#define icaT_columnindex 18
-#define icaL _p[19]
-#define icaL_columnindex 19
-#define ilk _p[20]
-#define ilk_columnindex 20
-#define h_inf _p[21]
-#define h_inf_columnindex 21
-#define tau_h _p[22]
-#define tau_h_columnindex 22
-#define m_inf _p[23]
-#define m_inf_columnindex 23
-#define tau_m _p[24]
-#define tau_m_columnindex 24
-#define ena _p[25]
-#define ena_columnindex 25
-#define n_inf _p[26]
-#define n_inf_columnindex 26
-#define tau_n _p[27]
-#define tau_n_columnindex 27
-#define ek _p[28]
-#define ek_columnindex 28
+#define ena _p[1]
+#define ena_columnindex 1
+#define gkdrbar _p[2]
+#define gkdrbar_columnindex 2
+#define ek _p[3]
+#define ek_columnindex 3
+#define gl _p[4]
+#define gl_columnindex 4
+#define el _p[5]
+#define el_columnindex 5
+#define kca _p[6]
+#define kca_columnindex 6
+#define vol _p[7]
+#define vol_columnindex 7
+#define caGain _p[8]
+#define caGain_columnindex 8
+#define gcatbar _p[9]
+#define gcatbar_columnindex 9
+#define gcalbar _p[10]
+#define gcalbar_columnindex 10
+#define tau_d2 _p[11]
+#define tau_d2_columnindex 11
+#define gkabar _p[12]
+#define gkabar_columnindex 12
+#define gkcabar _p[13]
+#define gkcabar_columnindex 13
+#define ina _p[14]
+#define ina_columnindex 14
+#define ik _p[15]
+#define ik_columnindex 15
+#define ikD _p[16]
+#define ikD_columnindex 16
+#define ikA _p[17]
+#define ikA_columnindex 17
+#define ikAHP _p[18]
+#define ikAHP_columnindex 18
+#define ica _p[19]
+#define ica_columnindex 19
+#define icaT _p[20]
+#define icaT_columnindex 20
+#define icaL _p[21]
+#define icaL_columnindex 21
+#define ilk _p[22]
+#define ilk_columnindex 22
+#define h_inf _p[23]
+#define h_inf_columnindex 23
+#define tau_h _p[24]
+#define tau_h_columnindex 24
+#define m_inf _p[25]
+#define m_inf_columnindex 25
+#define tau_m _p[26]
+#define tau_m_columnindex 26
+#define n_inf _p[27]
+#define n_inf_columnindex 27
+#define tau_n _p[28]
+#define tau_n_columnindex 28
 #define p_inf _p[29]
 #define p_inf_columnindex 29
 #define q_inf _p[30]
@@ -511,7 +511,9 @@ static double _thread1data[1];
  "k_r_stn", "mM",
  "tau_r_stn", "ms",
  "gnabar_stn", "S/cm2",
+ "ena_stn", "mV",
  "gkdrbar_stn", "S/cm2",
+ "ek_stn", "mV",
  "gl_stn", "S/cm2",
  "el_stn", "mV",
  "kca_stn", "1/ms",
@@ -532,9 +534,7 @@ static double _thread1data[1];
  "ilk_stn", "mA/cm2",
  "tau_h_stn", "ms",
  "tau_m_stn", "ms",
- "ena_stn", "mV",
  "tau_n_stn", "ms",
- "ek_stn", "mV",
  "tau_p_stn", "ms",
  "tau_q_stn", "ms",
  "eca_stn", "mV",
@@ -664,7 +664,9 @@ static void _ode_matsol(NrnThread*, _Memb_list*, int);
  "7.7.0",
 "stn",
  "gnabar_stn",
+ "ena_stn",
  "gkdrbar_stn",
+ "ek_stn",
  "gl_stn",
  "el_stn",
  "kca_stn",
@@ -689,10 +691,8 @@ static void _ode_matsol(NrnThread*, _Memb_list*, int);
  "tau_h_stn",
  "m_inf_stn",
  "tau_m_stn",
- "ena_stn",
  "n_inf_stn",
  "tau_n_stn",
- "ek_stn",
  "p_inf_stn",
  "q_inf_stn",
  "tau_p_stn",
@@ -735,7 +735,9 @@ static void nrn_alloc(Prop* _prop) {
  	_p = nrn_prop_data_alloc(_mechtype, 80, _prop);
  	/*initialize range parameters*/
  	gnabar = 0.049;
+ 	ena = 60;
  	gkdrbar = 0.057;
+ 	ek = -90;
  	gl = 0.00035;
  	el = -60;
  	kca = 2;
@@ -865,7 +867,7 @@ static int _ode_spec1(_threadargsproto_);
    Dc = ( c_inf - c ) / tau_c ;
    Dd1 = ( d1_inf - d1 ) / tau_d1 ;
    Dd2 = ( d2_inf - d2 ) / tau_d2 ;
-   Dcai = caGain * ( - ica * area * 1e-11 / ( 2.0 * FARADAY * vol ) - kca * cai ) ;
+   Dcai = 337.1 * ( - ica ) / ( 2.0 * FARADAY ) - .2 * cai ;
    Da = ( a_inf - a ) / tau_a ;
    Db = ( b_inf - b ) / tau_b ;
    Dr = ( r_inf - r ) / tau_r ;
@@ -883,7 +885,7 @@ static int _ode_spec1(_threadargsproto_);
  Dc = Dc  / (1. - dt*( ( ( ( - 1.0 ) ) ) / tau_c )) ;
  Dd1 = Dd1  / (1. - dt*( ( ( ( - 1.0 ) ) ) / tau_d1 )) ;
  Dd2 = Dd2  / (1. - dt*( ( ( ( - 1.0 ) ) ) / tau_d2 )) ;
- Dcai = Dcai  / (1. - dt*( ( caGain )*( ( ( - ( kca )*( 1.0 ) ) ) ) )) ;
+ Dcai = Dcai  / (1. - dt*( ( - ( .2 )*( 1.0 ) ) )) ;
  Da = Da  / (1. - dt*( ( ( ( - 1.0 ) ) ) / tau_a )) ;
  Db = Db  / (1. - dt*( ( ( ( - 1.0 ) ) ) / tau_b )) ;
  Dr = Dr  / (1. - dt*( ( ( ( - 1.0 ) ) ) / tau_r )) ;
@@ -901,7 +903,7 @@ static int _ode_spec1(_threadargsproto_);
     c = c + (1. - exp(dt*(( ( ( - 1.0 ) ) ) / tau_c)))*(- ( ( ( c_inf ) ) / tau_c ) / ( ( ( ( - 1.0 ) ) ) / tau_c ) - c) ;
     d1 = d1 + (1. - exp(dt*(( ( ( - 1.0 ) ) ) / tau_d1)))*(- ( ( ( d1_inf ) ) / tau_d1 ) / ( ( ( ( - 1.0 ) ) ) / tau_d1 ) - d1) ;
     d2 = d2 + (1. - exp(dt*(( ( ( - 1.0 ) ) ) / tau_d2)))*(- ( ( ( d2_inf ) ) / tau_d2 ) / ( ( ( ( - 1.0 ) ) ) / tau_d2 ) - d2) ;
-    cai = cai + (1. - exp(dt*(( caGain )*( ( ( - ( kca )*( 1.0 ) ) ) ))))*(- ( ( caGain )*( ( ( ( ( - ica )*( area ) )*( 1e-11 ) ) / ( 2.0 * FARADAY * vol ) ) ) ) / ( ( caGain )*( ( ( - ( kca )*( 1.0 ) ) ) ) ) - cai) ;
+    cai = cai + (1. - exp(dt*(( - ( .2 )*( 1.0 ) ))))*(- ( ( ( 337.1 )*( ( - ica ) ) ) / ( 2.0 * FARADAY ) ) / ( ( - ( .2 )*( 1.0 ) ) ) - cai) ;
     a = a + (1. - exp(dt*(( ( ( - 1.0 ) ) ) / tau_a)))*(- ( ( ( a_inf ) ) / tau_a ) / ( ( ( ( - 1.0 ) ) ) / tau_a ) - a) ;
     b = b + (1. - exp(dt*(( ( ( - 1.0 ) ) ) / tau_b)))*(- ( ( ( b_inf ) ) / tau_b ) / ( ( ( ( - 1.0 ) ) ) / tau_b ) - b) ;
     r = r + (1. - exp(dt*(( ( ( - 1.0 ) ) ) / tau_r)))*(- ( ( ( r_inf ) ) / tau_r ) / ( ( ( ( - 1.0 ) ) ) / tau_r ) - r) ;
@@ -1109,11 +1111,8 @@ for (_iml = 0; _iml < _cntml; ++_iml) {
 }
 
 static double _nrn_current(double* _p, Datum* _ppvar, Datum* _thread, NrnThread* _nt, double _v){double _current=0.;v=_v;{ {
-   T = 273.0 + celsius - 9.5 ;
-   ena = - ( R * T ) / FARADAY * log ( nai / nao ) * 1000.0 ;
-   ek = ( R * T ) / FARADAY * log ( ko / ki ) * 1000.0 ;
+   T = 273.0 + celsius ;
    eca = - ( R * T ) / FARADAY * log ( cai / cao ) * 1000.0 / 2.0 ;
-   printf ( "%f %f %f\n" , ena , ek , eca ) ;
    ina = gnabar * m * m * m * h * ( v - ena ) ;
    ikD = gkdrbar * pow( n , 4.0 ) * ( v - ek ) ;
    ikA = gkabar * a * a * b * ( v - ek ) ;
@@ -1330,6 +1329,7 @@ static const char* nmodl_file_text =
   "	sig_m = -0.7 (mV)\n"
   "	sig_h1 = -15 (mV)\n"
   "	sig_h2 = 16 (mV)\n"
+  "	ena = 60 (mV)\n"
   "\n"
   ": Delayed rectifier K\n"
   "	gkdrbar  = 57e-3	(S/cm2)  \n"
@@ -1341,6 +1341,7 @@ static const char* nmodl_file_text =
   "	tht_n2 = -40 (mV)\n"
   "	sig_n1 = -40 (mV)\n"
   "	sig_n2 = 50 (mV)\n"
+  "	ek = -90 (mV)\n"
   "\n"
   ":Leakage current\n"
   "	gl	= 0.35e-3	(S/cm2)\n"
@@ -1437,12 +1438,11 @@ static const char* nmodl_file_text =
   "	tau_h	(ms)\n"
   "	m_inf\n"
   "	tau_m	(ms)\n"
-  "	ena (mV)\n"
-  "\n"
+  "	:ena (mV)\n"
   ":Delayed rectifier\n"
   "	n_inf\n"
   "	tau_n	(ms)\n"
-  "	ek (mV) := -90\n"
+  "	:ek (mV) := -90\n"
   "\n"
   ":ca T current\n"
   "	p_inf\n"
@@ -1487,11 +1487,11 @@ static const char* nmodl_file_text =
   "BREAKPOINT {\n"
   "	SOLVE states METHOD cnexp\n"
   "\n"
-  "	T = 273 + celsius - 9.5\n"
-  "	ena = -(R*T)/FARADAY*log(nai/nao)*1000\n"
-  "	ek = (R*T)/FARADAY*log(ko/ki)*1000\n"
+  "	T = 273 + celsius\n"
+  "	:ena = -(R*T)/FARADAY*log(nai/nao)*1000\n"
+  "	:ek = (R*T)/FARADAY*log(ko/ki)*1000\n"
   "	eca = -(R*T)/FARADAY*log(cai/cao)*1000/2\n"
-  "	printf(\"%f %f %f\\n\", ena, ek, eca)\n"
+  "	:printf(\"%f\\n\", eca)\n"
   "	:printf(\"%f %f\\n\", ki, ko)\n"
   "\n"
   "	ina   = gnabar * m*m*m*h * (v - ena)\n"
@@ -1520,10 +1520,10 @@ static const char* nmodl_file_text =
   "	d2' = (d2_inf - d2)/tau_d2\n"
   "\n"
   "      :(Ica mA/cm2)*(area um2)*(1e-8 cm2/um2)*(1e-3 A/mA)*(1/(2*F) mol/C)*(1e-3 sec/msec)*(1e3 mMol/mol)(1/volume 1/L)=(mM/msec)\n"
-  "	cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)\n"
-  "\n"
-  "	:cai' = 337.1*((-ica)/(2*FARADAY) - kca*cai)\n"
-  "	: Converting mA to A/uA\n"
+  "	:cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)\n"
+  "	\n"
+  "	:printf(\"%f mM \", cai)\n"
+  "	cai' = 337.1*(-ica)/(2*FARADAY) - .2*cai\n"
   ":	cai' = -ica*area*somaAreaFrac*1e-11/(2*FARADAY*vol*shellVolFrac) + (5e-6 - cai)/kca\n"
   "\n"
   "	a' = (a_inf - a)/tau_a\n"

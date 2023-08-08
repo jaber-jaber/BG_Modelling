@@ -10,7 +10,7 @@ h.load_file("stdrun.hoc")
 # Defining initial conditions
 h.celsius = 30
 h.v_init = -60 * mV
-h.tstop = 1 * sec
+h.tstop = 2 * sec
 h.dt = 0.01
 
 # These values are in H&M model parBGLaunch.hoc file.
@@ -48,10 +48,9 @@ time = h.Vector().record(h._ref_t)
 # apc = h.APCount(stn.soma(0.5))
 
 h.finitialize(h.v_init)
-h.continuerun(h.tstop)
 
-t = np.array(time)
-v = np.array(soma_v)
+while h.t < h.tstop:
+    h.fadvance()
 
 # Calculate Frequency
 rec_data = np.array(recording_vec)
@@ -62,7 +61,7 @@ print("{} Hz".format(f))
 
 
 vtime = plt.figure(1)
-plt.plot(t, v, color='k')
+plt.plot(time, soma_v, color='k')
 plt.xlabel("Time (s)")
 plt.ylabel("Membrane Potential (mV)")
 vtime.show()
