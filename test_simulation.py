@@ -8,8 +8,10 @@ import textwrap
 h.load_file("stdrun.hoc")
 
 # Defining initial conditions
-h.celsius = 33
-h.tstop = 1000
+h.celsius = 30
+h.v_init = -60 * mV
+h.tstop = 1 * sec
+h.dt = 0.01
 
 # These values are in H&M model parBGLaunch.hoc file.
 
@@ -27,10 +29,10 @@ print(stn.soma.psection()) # Tells you all the density mech values
 # To find out all h attributes, run: print(textwrap.fill(", ".join(dir(h))))
 
 # Insert this if you want to obtain results of depolarization current injection into cell.
-stim = h.IClamp(0.5, sec=stn.soma)
-stim.delay = 0
-stim.dur = 1
-stim.amp = 0.5e-3
+# stim = h.IClamp(stn.soma(0.5))
+# stim.delay = 0
+# stim.dur = 1
+# stim.amp = 0.002
 
 # Ionic currents
 k_current = h.Vector().record(stn.soma().stn._ref_ik)
@@ -43,33 +45,36 @@ ahp_current = h.Vector().record(stn.soma().stn._ref_ikAHP)
 # Membrane potential
 soma_v = h.Vector().record(stn.soma()._ref_v)
 time = h.Vector().record(h._ref_t)
+# apc = h.APCount(stn.soma(0.5))
 
-apc = h.APCount(stn.soma(0.5))
-
-h.finitialize(-58 * mV)
+h.finitialize(h.v_init)
 h.continuerun(h.tstop)
+
+t = np.array(time)
+v = np.array(soma_v)
 
 # Calculate Frequency
 rec_data = np.array(recording_vec)
 f = (len(rec_data) / (h.tstop))*1000
 
 print("{} Hz".format(f))
-print(apc.thresh) # Threshold is -20 at this temp
+# print(apc.thresh) # Threshold is -20 at this temp
+
 
 vtime = plt.figure(1)
-plt.plot(time/1000, soma_v, color='k')
+plt.plot(t, v, color='k')
 plt.xlabel("Time (s)")
 plt.ylabel("Membrane Potential (mV)")
 vtime.show()
 
-ctime = plt.figure(2)
-plt.plot(time/1000, k_current)
-plt.plot(time/1000, caL_current)
-plt.plot(time/1000, na_current)
-plt.plot(time/1000, atype_current)
-plt.plot(time/1000, caT_current)
-plt.plot(time/1000, ahp_current)
-plt.legend(["Potassium current", "L-type calcium current", "Sodium current", "A-type Potassium current", "T-type calcium current", "Calcium-dependent Potassium current"])
-ctime.show()
+# ctime = plt.figure(2)
+# plt.plot(time/1000, k_current)
+# plt.plot(time/1000, caL_current)
+# plt.plot(time/1000, na_current)
+# plt.plot(time/1000, atype_current)
+# plt.plot(time/1000, caT_current)
+# plt.plot(time/1000, ahp_current)
+# plt.legend(["Potassium current", "L-type calcium current", "Sodium current", "A-type Potassium current", "T-type calcium current", "Calcium-dependent Potassium current"])
+# ctime.show()
 
 plt.show()
