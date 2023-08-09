@@ -9,8 +9,8 @@ h.load_file("stdrun.hoc")
 
 # Defining initial conditions
 h.celsius = 30
-h.v_init = -60 * mV
-h.tstop = 2 * sec
+h.v_init = -62.65 * mV
+h.tstop = 3 * sec
 h.dt = 0.01
 
 # These values are in H&M model parBGLaunch.hoc file.
@@ -30,9 +30,9 @@ print(stn.soma.psection()) # Tells you all the density mech values
 
 # Insert this if you want to obtain results of depolarization current injection into cell.
 # stim = h.IClamp(stn.soma(0.5))
-# stim.delay = 0
-# stim.dur = 1
-# stim.amp = 0.002
+# stim.delay = 2 * sec
+# stim.dur = 4 * sec
+# stim.amp = 79.522e-3
 
 # Ionic currents
 k_current = h.Vector().record(stn.soma().stn._ref_ik)
@@ -48,9 +48,7 @@ time = h.Vector().record(h._ref_t)
 # apc = h.APCount(stn.soma(0.5))
 
 h.finitialize(h.v_init)
-
-while h.t < h.tstop:
-    h.fadvance()
+h.continuerun(h.tstop)
 
 # Calculate Frequency
 rec_data = np.array(recording_vec)

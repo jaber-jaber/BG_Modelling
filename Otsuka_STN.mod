@@ -244,10 +244,10 @@ DERIVATIVE states {
 	d2' = (d2_inf - d2)/tau_d2
 
       :(Ica mA/cm2)*(area um2)*(1e-8 cm2/um2)*(1e-3 A/mA)*(1/(2*F) mol/C)*(1e-3 sec/msec)*(1e3 mMol/mol)(1/volume 1/L)=(mM/msec)
-	:cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)
+	cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)
 	
 	:printf("%f mM ", cai)
-	cai' = 337.1*(-ica)/(2*FARADAY) - .2*cai
+	:cai' = (-ica)/(2*FARADAY) - kca*cai
 :	cai' = -ica*area*somaAreaFrac*1e-11/(2*FARADAY*vol*shellVolFrac) + (5e-6 - cai)/kca
 
 	a' = (a_inf - a)/tau_a

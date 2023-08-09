@@ -17,20 +17,20 @@ class STN(Cell):
         self.soma = h.Section(name='soma', cell=self)
 
     def define_geometry(self):
-        self.soma.L = self.soma.diam = 60
+        self.soma.L = self.soma.diam = 22.5
 
     def define_biophysics(self):
-        self.soma.Ra = 200
+        self.soma.Ra = 660
         self.soma.nseg = 1
         self.soma.cm = 1
         
         # Bias current
-        self.stim = h.IClamp(0.5, sec=self.soma)
-        self.stim.delay = 0
-        self.stim.dur = 1e9
-        self.stim.amp = 0.0336
+        # self.stim = h.IClamp(0.5, sec=self.soma)
+        # self.stim.delay = 0
+        # self.stim.dur = 1e9
+        # self.stim.amp = 10
 
-        # Area = 10000 um2
+        # Area = 1590.43 um2
     
         # Defining electrophysiological properties
         self.soma.insert('myions')
