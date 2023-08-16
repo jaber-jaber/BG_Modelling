@@ -3,6 +3,8 @@
 #define IMPORT extern __declspec(dllimport)
 IMPORT int nrnmpi_myid, nrn_nobanner_;
 
+extern void _ampa_reg();
+extern void _ampa1_reg();
 extern void _myions_reg();
 extern void _Otsuka_STN_reg();
 
@@ -11,10 +13,14 @@ void modl_reg(){
     if (!nrn_nobanner_) if (nrnmpi_myid < 1) {
 	fprintf(stderr, "Additional mechanisms from files\n");
 
+fprintf(stderr," ampa.mod");
+fprintf(stderr," ampa1.mod");
 fprintf(stderr," myions.mod");
 fprintf(stderr," Otsuka_STN.mod");
 fprintf(stderr, "\n");
     }
+_ampa_reg();
+_ampa1_reg();
 _myions_reg();
 _Otsuka_STN_reg();
 }
