@@ -6,14 +6,6 @@
 	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\\n"
 	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
 
-./ampa.c: ../ampa.mod
-	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\\n"
-	(cd "..";  MODLUNIT=$(NRNUNITS) $(NOCMODL) "ampa.mod" -o "/Users/jaberjaber/BG_Modelling/arm64")
-
-./ampa.o: ./ampa.c
-	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\\n"
-	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
-
 ./myions.c: ../myions.mod
 	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\\n"
 	(cd "..";  MODLUNIT=$(NRNUNITS) $(NOCMODL) "myions.mod" -o "/Users/jaberjaber/BG_Modelling/arm64")
