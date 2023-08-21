@@ -14,13 +14,11 @@ class Cell():
         
         self.soma = None
         self.Syn_list = []
-        self.Iscale = 0
 
         # Cell methods (equivalent of procs in HOC)
         self.create_sections()
         self.define_biophysics()
         self.define_geometry()
-        self.build_subsets
 
     def create_sections(self):
         # Sections in the form of:
@@ -38,10 +36,14 @@ class Cell():
         # Define biophysics of the cell (assign membrane properties)
         raise NotImplementedError("Biophysics of the cell have not been defined.")
 
-    def self_con(self, threshold=10):
-        netcon = h.NetCon(self.soma(0.5)._ref_v, self.soma)
-        netcon.threshold = threshold
-        return netcon
+    def get_spikes(self):
+        spiketrain = []
+        return spiketrain.netconvecs_to_listoflists(self.t_vec, self.id_vec)
 
-
-    
+    def current_clamp(self):
+        stim = h.IClamp(self.soma(self.loc))
+        stim.delay = self.delay
+        stim.dur = self.dur
+        stim.amp = self.amp
+        
+        return stim
