@@ -13,10 +13,8 @@ h.v_init = -62.65 * mV
 h.tstop = 3 * sec
 h.dt = 0.01
 
-# These values are in H&M model parBGLaunch.hoc file.
-
-# Defining the cell
-stn = STN()
+# Defining the cell(s)
+stn = STN(1)
 stn_area = stn.soma().area()
 recording_vec = h.Vector()
 
@@ -25,7 +23,7 @@ rec_netcon = h.NetCon(stn.soma()._ref_v, None)
 rec_netcon.record(recording_vec)
 
 # To check the mechanisms and point processes present in the STN soma:
-print(stn.soma.psection()) # Tells you all the density mech values
+# print(stn.soma.psection()) # Tells you all the density mech values
 # To find out all h attributes, run: print(textwrap.fill(", ".join(dir(h))))
 
 # Insert this if you want to obtain results of depolarization current injection into cell.
