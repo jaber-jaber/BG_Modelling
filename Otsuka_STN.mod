@@ -17,7 +17,7 @@ NEURON {
 	RANGE gl, el, ilk                                      : leak
 	RANGE gcatbar, eca, p_inf, tau_p, q_inf, tau_q	       : T-type ca current
 	RANGE gcalbar, eca, c_inf, d1_inf, d2_inf, tau_c, tau_d1, tau_d2, icaT, icaL  : L-type ca current
-	RANGE gkabar, ek, a_inf, tau_a, b_inf, tau_b, ikA      : A-type K current
+	RANGE gkabar, ek, a_inf, tau_a, b_inf, tau_b, ikA  : A-type K current
 	RANGE gkcabar, ek, r_inf, ikAHP                        : ca dependent AHP K current
       RANGE kca, vol, caGain                                 : ca dynamics
 }
@@ -35,7 +35,7 @@ UNITS {
 PARAMETER {
 	R = 8.31441 (Gas constant)
 	T 		(Absolute temp)
-	celsius		(degC)
+	celsius	(degC)
 
 :Fast Na channel
 	gnabar   = 49e-3 (S/cm2) 
@@ -53,6 +53,7 @@ PARAMETER {
 	sig_m = -0.7 (mV)
 	sig_h1 = -15 (mV)
 	sig_h2 = 16 (mV)
+	ena = 60 (mV)
 
 : Delayed rectifier K
 	gkdrbar  = 57e-3	(S/cm2)  
@@ -64,6 +65,7 @@ PARAMETER {
 	tht_n2 = -40 (mV)
 	sig_n1 = -40 (mV)
 	sig_n2 = 50 (mV)
+	ek = -90 (mV)
 
 :Leakage current
 	gl	= 0.35e-3	(S/cm2)
@@ -71,9 +73,9 @@ PARAMETER {
 
 :Ca dynamics
 	kca   = 2        (1/ms)
-      area
-      vol = 3.355e-11  (L) :~20um radius sphere
-      caGain = .1
+    area
+    vol = 3.355e-11  (L) :~20um radius sphere
+    caGain = .1
 
 :T-type ca current
 	gcatbar   = 5e-3 (S/cm2)  
@@ -160,12 +162,11 @@ ASSIGNED {
 	tau_h	(ms)
 	m_inf
 	tau_m	(ms)
-	ena           (mV)   := 60  
-
+	:ena (mV)
 :Delayed rectifier
 	n_inf
 	tau_n	(ms)
-	ek         (mV) := -90
+	:ek (mV) := -90
 
 :ca T current
 	p_inf
@@ -210,11 +211,12 @@ STATE {
 BREAKPOINT {
 	SOLVE states METHOD cnexp
 
-	T = 273 + celsius - 9.5
-	ena = -(R*T)/FARADAY*log(nai/nao)*1000
-	ek = (R*T)/FARADAY*log(ko/ki)*1000
+	T = 273 + celsius
+	:ena = -(R*T)/FARADAY*log(nai/nao)*1000
+	:ek = (R*T)/FARADAY*log(ko/ki)*1000
 	eca = -(R*T)/FARADAY*log(cai/cao)*1000/2
-	:printf("%f %f %f\n", ena, ek, eca)
+	:printf("%f\n", eca)
+	:printf("%f %f\n", ki, ko)
 
 	ina   = gnabar * m*m*m*h * (v - ena)
 	ikD   = gkdrbar * n^4 * (v - ek)
@@ -243,6 +245,9 @@ DERIVATIVE states {
 
       :(Ica mA/cm2)*(area um2)*(1e-8 cm2/um2)*(1e-3 A/mA)*(1/(2*F) mol/C)*(1e-3 sec/msec)*(1e3 mMol/mol)(1/volume 1/L)=(mM/msec)
 	cai' = caGain*(-ica*area*1e-11/(2*FARADAY*vol) - kca*cai)
+	
+	:printf("%f mM ", cai)
+	:cai' = (-ica)/(2*FARADAY) - kca*cai
 :	cai' = -ica*area*somaAreaFrac*1e-11/(2*FARADAY*vol*shellVolFrac) + (5e-6 - cai)/kca
 
 	a' = (a_inf - a)/tau_a

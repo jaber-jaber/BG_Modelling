@@ -1,4 +1,3 @@
-
 :used to set nai, nao, ki, ko so that NEURON's default values are not used
 
 NEURON {
