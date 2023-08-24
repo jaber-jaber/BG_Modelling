@@ -1,29 +1,19 @@
-from neuron import h
+from neuron import h, gui
 from neuron.units import ms, mV
 from STN import STN
 import matplotlib.pyplot as plt
 
-h.load_file("stdrun.hoc")
+stn_cells = []
+N = 5
 
-h.celsius = 30
-h.v_init = -62.25 * mV
-h.tstop = 3000 * ms
+for i in range(N):
+    stn = STN(i)
+    stn._set_position(i*5, 0, i+100)
+    stn_cells.append(stn)
 
-stn = STN(1)
-stn2 = STN(2)
 
-stn_syn = h.GABAa_S(stn2.soma(0.5))
+ps = h.PlotShape(True)
+ps.show(0)
 
-nc = h.NetCon(stn.soma(0.5)._ref_v, stn_syn)
-nc.delay = 1000 * ms
-nc.weight[0] = 1
-
-stn2_v = h.Vector().record(stn2.soma(0.5)._ref_v)
-t = h.Vector().record(h._ref_t)
-
-h.finitialize(h.v_init)
-h.continuerun(h.tstop)
-
-plt.figure(1)
-plt.plot(t, stn2_v)
-plt.show()
+h.topology()
+h.finitialize(-65 * mV)

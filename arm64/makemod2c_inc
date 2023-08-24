@@ -1,3 +1,19 @@
+./Destexhe_Static_AMPA_Synapse.c: ../Destexhe_Static_AMPA_Synapse.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\\n"
+	(cd "..";  MODLUNIT=$(NRNUNITS) $(NOCMODL) "Destexhe_Static_AMPA_Synapse.mod" -o "/Users/jaberjaber/BG_Modelling/arm64")
+
+./Destexhe_Static_AMPA_Synapse.o: ./Destexhe_Static_AMPA_Synapse.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\\n"
+	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
+
+./Destexhe_Static_GABAA_Synapse.c: ../Destexhe_Static_GABAA_Synapse.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\\n"
+	(cd "..";  MODLUNIT=$(NRNUNITS) $(NOCMODL) "Destexhe_Static_GABAA_Synapse.mod" -o "/Users/jaberjaber/BG_Modelling/arm64")
+
+./Destexhe_Static_GABAA_Synapse.o: ./Destexhe_Static_GABAA_Synapse.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\\n"
+	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
+
 ./Otsuka_STN.c: ../Otsuka_STN.mod
 	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\\n"
 	(cd "..";  MODLUNIT=$(NRNUNITS) $(NOCMODL) "Otsuka_STN.mod" -o "/Users/jaberjaber/BG_Modelling/arm64")

@@ -4,9 +4,7 @@ import textwrap
 
 class STN(Cell):
     def __init__(self, gid, amp=0, dur=1e12, loc=0.5, delay=0):
-        super(STN, self).__init__() # Functions are inherited from class Cell. If undefined here, 
-        # will act as functions that are defined in Cell.
-
+        super().__init__(0, 0, 0, 0)
         self._gid = gid
         self.ident = 'stn'
         self.amp = amp
