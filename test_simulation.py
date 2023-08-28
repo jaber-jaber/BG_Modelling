@@ -14,7 +14,7 @@ h.tstop = 3 * sec
 h.dt = 0.01
 
 # Defining the cell(s)
-stn = STN(1)
+stn = STN(1, 0, 0, 0)
 stn_area = stn.soma().area()
 recording_vec = h.Vector()
 
