@@ -3,22 +3,12 @@ from Cell import Cell
 import textwrap
 
 class STN(Cell):
-    def __init__(self, gid, amp=0, dur=1e12, loc=0.5, delay=0):
-        super(STN, self).__init__() # Functions are inherited from class Cell. If undefined here, 
-        # will act as functions that are defined in Cell.
-
-        self._gid = gid
-        self.ident = 'stn'
-        self.amp = amp
-        self.dur = dur
-        self.loc = loc
-        self.delay = delay
-
     def create_sections(self):
         self.soma = h.Section(name='soma', cell=self)
 
     def define_geometry(self):
         self.soma.L = self.soma.diam = 22.5
+        self.shape_3D()
 
     def define_biophysics(self):
         #self.soma.Ra = 660
