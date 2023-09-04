@@ -61,14 +61,8 @@ class Cell():
         h.pt3dadd(len1, 0, 0, self.soma.diam)
         h.pop_section()
 
-    # def get_spikes(self):
-    #     spiketrain = []
-    #     return spiketrain.netconvecs_to_listoflists(self.t_vec, self.id_vec)
-
-    # def current_clamp(self):
-    #     stim = h.IClamp(self.soma(self.loc))
-    #     stim.delay = self.delay
-    #     stim.dur = self.dur
-    #     stim.amp = self.amp
+    def create_synapse(self, s_type):
+        if s_type == 'S2G':
+            synapse = h.AMPA(0.5, sec=self.soma)
         
-    #     return stim
+        self.Syn_list.append(synapse)
