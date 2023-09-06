@@ -24,7 +24,6 @@ class Cell():
         # Sections in the form of:
         # h.Section(name='soma', cell=self)
         # or h.Section(name='dendrite', cell=self)
-
         
         raise NotImplementedError("Sections were not created.")
 
@@ -61,8 +60,9 @@ class Cell():
         h.pt3dadd(len1, 0, 0, self.soma.diam)
         h.pop_section()
 
-    def create_synapse(self, s_type):
-        if s_type == 'S2G':
-            synapse = h.AMPA(0.5, sec=self.soma)
-        
-        self.Syn_list.append(synapse)
+    def create_synapse(self, cell_type):
+
+        if cell_type == 'stn':
+            syn = h.GABAa_S(self.soma(0.5))
+
+        self.Syn_list.append(syn)

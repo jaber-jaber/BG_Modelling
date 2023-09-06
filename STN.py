@@ -3,8 +3,9 @@ from Cell import Cell
 import textwrap
 
 class STN(Cell):
-    def create_sections(self):
+    def create_sections(self, cell='stn'):
         self.soma = h.Section(name='soma', cell=self)
+        self.create_synapse(cell)
 
     def define_geometry(self):
         self.soma.L = self.soma.diam = 22.5
