@@ -21,6 +21,9 @@ class Cell():
         self._set_position(x, y, z)
         self.create_synapse(cell)
 
+    def __repr__(self):
+        return "{}[{}]".format(self.name, self.cid)
+
     def create_sections(self):
         # Sections in the form of:
         # h.Section(name='soma', cell=self)

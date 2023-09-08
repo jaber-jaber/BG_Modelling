@@ -3,6 +3,8 @@ from Cell import Cell
 import textwrap
 
 class STN(Cell):
+    name = "STN"
+    
     def create_sections(self):
         self.soma = h.Section(name='soma', cell=self)
 
