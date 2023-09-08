@@ -3,7 +3,7 @@ from neuron import h
 class Cell():
     # Cell template. All other cells in this model will inherit from Cell.
 
-    def __init__(self, cid, x, y, z):
+    def __init__(self, cid, x, y, z, cell):
 
         self.cid = cid
         # Cell in 3D space
@@ -19,6 +19,7 @@ class Cell():
         self.build_subsets()
         self.define_geometry()
         self._set_position(x, y, z)
+        self.create_synapse(cell)
 
     def create_sections(self):
         # Sections in the form of:
@@ -53,16 +54,26 @@ class Cell():
         self.x, self.y, self.z = x, y, z
 
     def shape_3D(self):
-        len1 = self.soma.L
-        self.soma.push()
-        h.pt3dclear()
-        h.pt3dadd(0, 0, 0, self.soma.diam)
-        h.pt3dadd(len1, 0, 0, self.soma.diam)
-        h.pop_section()
+        soma_section = h.SectionRef(sec=self.soma)
+        
+        len1 = soma_section.sec.L
+        soma_section.sec.pt3dclear()
+        soma_section.sec.pt3dadd(0, 0, 0, soma_section.sec.diam)
+        soma_section.sec.pt3dadd(len1, 0, 0, soma_section.sec.diam)
+        # len1 = self.soma.L
+        # self.soma.push()
+        # h.pt3dclear()
+        # h.pt3dadd(0, 0, 0, self.soma.diam)
+        # h.pt3dadd(len1, 0, 0, self.soma.diam)
+        # h.pop_section()
 
     def create_synapse(self, cell_type):
 
         if cell_type == 'stn':
             syn = h.GABAa_S(self.soma(0.5))
 
+        if cell_type == 'gpe':
+            syn = h.AMPA_S(self.soma(0.5))
+
         self.Syn_list.append(syn)
+        return self.Syn_list
