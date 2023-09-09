@@ -3,27 +3,18 @@ from Cell import Cell
 import textwrap
 
 class GPE(Cell):
-    def __init__(self, gid, amp=0, dur=1e12, loc=0.5, delay=0):
-        super(GPE, self).__init__() # Functions are inherited from class Cell. If undefined here, 
-        # will act as functions that are defined in Cell.
-
-        self._gid = gid
-        self.ident = 'gpe'
-        self.amp = amp
-        self.dur = dur
-        self.loc = loc
-        self.delay = delay
-
     def create_sections(self):
         self.soma = h.Section(name='soma', cell=self)
 
     def define_geometry(self):
-        self.soma.L = self.soma.diam = 22.5
-
+        self.soma.L = self.soma.diam = 22.5 # This value will depend on the experimental papers
+        # 22.5 is for STN
+        self.shape_3D()
+        
     def define_biophysics(self):
         #self.soma.Ra = 660
         self.soma.nseg = 1
-        self.soma.cm = 1
+        self.soma.cm = 1 # Membrane capacitance
         
         # Bias current
         # self.stim = h.IClamp(0.5, sec=self.soma)
