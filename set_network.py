@@ -9,6 +9,7 @@ class Network():
         self.create_cells(N)
         self.channel_struct()
         self.exc_connections()
+        self.inhb_connections()
 
     def create_cells(self, N):
         self.stn_cells1 = []
@@ -35,18 +36,19 @@ class Network():
     def exc_connections(self):
         self.synapse_list = []
         self.exc_cons = []
+        print(self.channels)
 
         for channel in self.channels:
-            print(channel)
             for i in channel[1:]:
-                nc = h.NetCon(channel[0].soma(0.5)._ref_v, i.Syn_list[0], sec=channel[0].soma)
-                nc.weight[0] = 0
-                nc.delay = 500
+                nc = h.NetCon(channel[0].soma(0.5)._ref_v, i.Syn_list[0][0], sec=channel[0].soma)
                 self.exc_cons.append([nc])
 
             for gpe in channel[1:4]:
-                self.synapse_list.append([gpe.Syn_list[0]])
+                self.synapse_list.append(gpe.Syn_list[0])
 
+        for con in self.exc_cons:
+            con.weight[0] = 0
+            con.delay = 500
         
         print(self.exc_cons)
         print(self.synapse_list)
@@ -57,3 +59,4 @@ class Network():
         for channel in self.channels:
             for gpe in channel[1:4]:
                 pass
+
