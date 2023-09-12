@@ -3,6 +3,8 @@ from Cell import Cell
 import textwrap
 
 class GPE(Cell):
+    name = "GPe"
+    
     def create_sections(self):
         self.soma = h.Section(name='soma', cell=self)
 
