@@ -2,7 +2,7 @@ from neuron import h
 from STN import STN
 
 class Network():
-    # Network of N cells arranged in a row.
+    # Network of N STN cells arranged in a row.
     def __init__(self, N):
         self.N = N
         self.NumGPe = 3*N
@@ -80,17 +80,11 @@ class Network():
             for gpe in channel[1:4]:
                 
                 if len(self.channels) > 1:
-                    for channel_neighbour in channel[1:4]:
-                        if gpe != channel_neighbour: # Don't connect cell to itself
-                            nc = h.NetCon(gpe.soma(0.5)._ref_v, channel_neighbour.Syn_list[0][1], sec=gpe.soma)
+                    for channel_nb in channel[1:4]:
+                        if gpe != channel_nb: # Don't connect cell to itself
+                            nc = h.NetCon(gpe.soma(0.5)._ref_v, channel_nb.Syn_list[0][1], sec=gpe.soma)
                             # source = GPe cell
                             # target = Neighbouring GPe cell's GABAa pointprocess (see Cell.py)
-                
-                            self.inhb_cons.append(nc)
-
-                
-
-
 
         for netcon in self.inhb_cons:
             source, target = netcon.preseg(), netcon.postseg()
