@@ -26,50 +26,75 @@ class Network():
             self.stn_cells2.append(stn)
 
     def channel_struct(self):
-        self.channels = []
+        """ Function to build all functional channels given N number of cells in the network.
+        1:3 ratio between STN cells and GPe cells."""
+
+        self.channels = [] # List of all functional channels
 
         for i, j in enumerate(self.stn_cells1):
-            numgpe = i * 3
+            # i = position of cell (0, 1, etc)
+            # j = reference to cell object
+
+            numgpe = i * 3 # number of GPe cells
+
+            # Create "channel" which is a list containing 1 STN cell and 3 GPe cells
             channel = [j, self.stn_cells2[(numgpe-1)%self.NumGPe], self.stn_cells2[numgpe], self.stn_cells2[(numgpe+1)%self.NumGPe]]
             self.channels.append(channel)
 
     def exc_connections(self):
-        self.synapse_list = []
-        self.exc_cons = []
+        """Excitatory connections based on Hahn and McIntyre's functional channel paradigm.
+        1 STN cell -> 3 GPe cells in its channel."""
+
+        self.synapse_list = [] # List of synapse point processes
+        self.exc_cons = [] # List of NetCon objects connecting 1 STN cell to all 3 GPe cells within its channel
+
         print(self.channels)
 
         for channel in self.channels:
             for i in channel[1:]:
+                # i = GPe cell
+                
                 nc = h.NetCon(channel[0].soma(0.5)._ref_v, i.Syn_list[0][0], sec=channel[0].soma)
-                self.exc_cons.append([nc])
+                # source = STN cell
+                # target = GPe cell's inserted AMPA pointprocess (see Cell.py)
+
+                self.exc_cons.append(nc) 
 
             for gpe in channel[1:4]:
-                self.synapse_list.append(gpe.Syn_list[0])
 
-        for con in self.exc_cons:
-            con.weight[0] = 0
-            con.delay = 500
+                # Append AMPA pointprocess (Synapse)
+                self.synapse_list.append(gpe.Syn_list[0])
         
         print(self.exc_cons)
         print(self.synapse_list)
 
     def inhb_connections(self):
+        """Inhibitory connections as based on Hahn and McIntyre's functional channel paradigm.
+        Each GPe cell inhibits 2 GPe cells within its own channel.
+        Each GPe cell inhibits 4 neighbouring GPe cells.
+        Each GPe cell inhibits 2 neighbouring STN cells."""
+
         self.inhb_cons = []
 
         for channel in self.channels:
             for gpe in channel[1:4]:
-                pass
+                
+                if len(self.channels) > 1:
+                    for channel_neighbour in channel[1:4]:
+                        if gpe != channel_neighbour: # Don't connect cell to itself
+                            nc = h.NetCon(gpe.soma(0.5)._ref_v, channel_neighbour.Syn_list[0][1], sec=gpe.soma)
+                            # source = GPe cell
+                            # target = Neighbouring GPe cell's GABAa pointprocess (see Cell.py)
+                
+                            self.inhb_cons.append(nc)
 
-### Code to configure ###
+                
 
-# synapses = [[None for _ in range(num_cells)] for _ in range(num_cells)]
-#     netcons = [[None for _ in range(num_cells)] for _ in range(num_cells)]
 
-#     for i in range(num_cells):
-#         for j in range(num_cells):
-#             if i != j:  # Don't connect a cell to itself
-#                 synapses[i][j] = h.ExpSyn(Cells_List[j](0.5))
-#                 netcons[i][j] = h.NetCon(Cells_List[i](0.5)._ref_v, synapses[i][j], sec=Cells_List[i])
-#                 netcons[i][j].weight[0] = 0.04
-#                 netcons[i][j].delay = 5
-#     ```
+
+        for netcon in self.inhb_cons:
+            source, target = netcon.preseg(), netcon.postseg()
+            print(source, target)
+            # Print a list of each source and its target in the NetCon list to validate connections are correct
+
+        print(self.inhb_cons)
