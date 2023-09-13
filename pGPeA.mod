@@ -153,7 +153,7 @@ STATE {
 BREAKPOINT {
 	SOLVE states METHOD cnexp
 
-	T = 273 + celsius - 9.5
+	T = 273 + celsius
 	ena = -(R*T)/FARADAY*log(nai/nao)*1000
 	ek = (R*T)/FARADAY*log(ko/ki)*1000
 	eca = -(R*T)/FARADAY*log(cai/cao)*1000/2
