@@ -9,16 +9,16 @@ class GPE(Cell):
         self.soma = h.Section(name='soma', cell=self)
 
     def define_geometry(self):
-        self.soma.L = self.soma.diam = 60 # This value will depend on the experimental papers
+        self.soma.L = self.soma.diam = 60 # This value will depend on the experimental papers (GPE)
         # 22.5 is for STN
         self.shape_3D()
         
     def define_biophysics(self):
         #self.soma.Ra = 660
         self.soma.nseg = 1
-        self.soma.cm = 1 # Membrane capacitance
+        self.soma.cm = 1 # Membrane capacitance (Standrd set for GPE)
         
-        # Bias current
+        # Bias current # Use this to perform individual stimulation
         # self.stim = h.IClamp(0.5, sec=self.soma)
         # self.stim.delay = 0
         # self.stim.dur = 1e9
