@@ -77,18 +77,20 @@ class Network():
         self.inhb_cons = []
 
         for channel in self.channels:
-            for gpe in channel[1:4]:
+            for gpe in channel[1:]: # For each GPe cell in the channel
                 
-                if len(self.channels) > 1:
-                    for channel_nb in channel[1:4]:
+                if len(self.channels) > 1: # If multiple channels exist (N_STN > 1)
+                    for channel_nb in channel[1:]: # For each neighbour to the GPe cell
                         if gpe != channel_nb: # Don't connect cell to itself
                             nc = h.NetCon(gpe.soma(0.5)._ref_v, channel_nb.Syn_list[0][1], sec=gpe.soma)
+
                             # source = GPe cell
                             # target = Neighbouring GPe cell's GABAa pointprocess (see Cell.py)
 
         for netcon in self.inhb_cons:
             source, target = netcon.preseg(), netcon.postseg()
             print(source, target)
-            # Print a list of each source and its target in the NetCon list to validate connections are correct
+            # Print a list of each source and its target in the NetCon list to validate
+            # connections are correct
 
         print(self.inhb_cons)
