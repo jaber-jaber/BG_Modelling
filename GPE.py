@@ -9,7 +9,7 @@ class GPE(Cell):
         self.soma = h.Section(name='soma', cell=self)
 
     def define_geometry(self):
-        self.soma.L = self.soma.diam = 60 # This value will depend on the experimental papers (GPE)
+        self.soma.L = self.soma.diam = 34 # This value will depend on the experimental papers (GPE)
         # 22.5 is for STN
         self.shape_3D()
         
@@ -40,11 +40,11 @@ class GPE(Cell):
         # Rhythmic Spontaneous activity is primarily driven by
         self.soma.gnabar_gpe = 49e-3 # Fast sodium channel (GPE)
         self.soma.gkdrbar_gpe = 57e-3 # Delayed rectifier K channel (repolarization) (GPE)
-        self.soma.gkabar_gpe = 5e-3 # A-type potassium channel for delaying depolarization
+        # self.soma.gkabar_gpe = 5e-3 # A-type potassium channel for delaying depolarization
 
         # Freq of spontaneous activity depends on
         self.soma.gkcabar_gpe = 1e-3 # AHP Ca2+-dependent K channel, changed to Otsuka's. (GPE)
-        self.soma.gcalbar_gpe = 15e-3 # Long-lasting calcium Ca2+ currents
+        # self.soma.gcalbar_gpe = 15e-3 # Long-lasting calcium Ca2+ currents
         self.soma.gcatbar_gpe = 5e-3 #Low threshold T-type Ca2+ currents (GPE)
 
         # Ca dynamics and leak current
