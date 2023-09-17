@@ -74,9 +74,11 @@ class Cell():
 
         if cell_type == 'stn':
             syn = h.GABAa_S(self.soma(0.5))
+            self.Syn_list.append(syn)
 
         if cell_type == 'gpe':
             syn = h.AMPA_S(self.soma(0.5))
+            syn2 = h.GABAa_S(self.soma(0))
+            self.Syn_list.append([syn, syn2])
 
-        self.Syn_list.append(syn)
         return self.Syn_list
