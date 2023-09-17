@@ -64,33 +64,71 @@ class Network():
 
                 # Append AMPA pointprocess (Synapse)
                 self.synapse_list.append(gpe.Syn_list[0])
+            
+        print(f"List of excitatory connections in the channel: {self.exc_cons} \n")
         
-        print(self.exc_cons)
-        print(self.synapse_list)
-
     def inhb_connections(self):
         """Inhibitory connections as based on Hahn and McIntyre's functional channel paradigm.
         Each GPe cell inhibits 2 GPe cells within its own channel.
         Each GPe cell inhibits 4 neighbouring GPe cells.
         Each GPe cell inhibits 2 neighbouring STN cells."""
-
-        self.inhb_cons = []
+        self.nb_cons = []
+        self.stn_cons = []
+        self.nclist = []
+        self.pnclist = []
+        self.nnclist = []
+        self.prnclist = []
 
         for channel in self.channels:
             for gpe in channel[1:]: # For each GPe cell in the channel
                 
-                if len(self.channels) > 1: # If multiple channels exist (N_STN > 1)
-                    for channel_nb in channel[1:]: # For each neighbour to the GPe cell
-                        if gpe != channel_nb: # Don't connect cell to itself
-                            nc = h.NetCon(gpe.soma(0.5)._ref_v, channel_nb.Syn_list[0][1], sec=gpe.soma)
+                for channel_nb in channel[1:]: # For each neighbour to the GPe cell
+                    if gpe != channel_nb: # Don't connect cell to itself
+                        nb_nc = h.NetCon(gpe.soma(0.5)._ref_v, channel_nb.Syn_list[0][1], sec=gpe.soma)
+                        self.nb_cons.append(nb_nc)
+                        # source = GPe cell
+                        # target = Neighbouring GPe cell's GABAa pointprocess (see Cell.py)
+        
+        print(f"List of inhibitory connections between the GPe cell and its neighbours: {self.nb_cons} \n")
 
-                            # source = GPe cell
-                            # target = Neighbouring GPe cell's GABAa pointprocess (see Cell.py)
+        if len(self.channels) > 1:
+            for k in range(len(self.channels)):
+                current = self.channels[k]
+                after = self.channels[(k+1) % len(self.channels)]
+                prev = self.channels[(k-1) % len(self.channels)]
 
-        for netcon in self.inhb_cons:
-            source, target = netcon.preseg(), netcon.postseg()
-            print(source, target)
+                nnlist = self.channels[(k+2) % len(self.channels)]
+                prprlist = self.channels[(k-2) % len(self.channels)]
+
+                for i in range(1, len(current)):
+                    gpe = current[i]
+                    nenc = h.NetCon(gpe.soma(0.5)._ref_v, after[0].Syn_list[0], sec=gpe.soma)
+                    nc2 = h.NetCon(gpe.soma(0.5)._ref_v, prev[0].Syn_list[0], sec=gpe.soma)
+                    self.stn_cons.append([nenc, nc2])
+
+                for j in range(1, len(current)):
+                    gpe = current[j]
+
+                    for p in range(1, 4):
+                        nc3 = h.NetCon(gpe.soma(0.5)._ref_v, after[p].Syn_list[0][1], sec=gpe.soma)
+                        pnc = h.NetCon(gpe.soma(0.5)._ref_v, prev[p].Syn_list[0][1], sec=gpe.soma)
+                        self.nclist.append(nc3)
+                        self.pnclist.append(pnc)
+                    
+                    nnc = h.NetCon(gpe.soma(0.5)._ref_v, nnlist[1].Syn_list[0][1], sec=gpe.soma)
+                    self.nnclist.append(nnc)
+                    prnc = h.NetCon(gpe.soma(0.5)._ref_v, prprlist[1].Syn_list[0][1], sec=gpe.soma)
+                    self.prnclist.append(prnc)
+                    
+        print(f"List of inhibitory connections between the GPe cell and the STN cell in its own channel: {self.stn_cons} \n")
+        print(f"List of inhibitory connections between the GPe cell and the subsequent neighbouring channel: {self.nclist} \n")
+        print(f"List of inhibitory connections between the GPe cell and the previous neighbouring channel: {self.pnclist} \n")
+        print(f"List of inhibitory connections between the GPe cell and the succeeding neighbouring channel: {self.nnclist} \n")
+        print(f"List of inhibitory connections between the GPe cell and the preceding neighbouring channel: {self.prnclist} \n")
+
+        # for connect in self.stn_cons:
+        #     for netcon in connect:
+        #         source, target = netcon.preseg(), netcon.postseg()
+        #         print(source, target)
             # Print a list of each source and its target in the NetCon list to validate
             # connections are correct
-
-        print(self.inhb_cons)
