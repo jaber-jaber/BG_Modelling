@@ -8,7 +8,7 @@ TITLE  All ion channels used in GP models
 
 
 NEURON {
-	SUFFIX GPeA
+	SUFFIX gpe
 	NONSPECIFIC_CURRENT ilk
 	USEION ca READ cai, cao WRITE ica, cai
 	USEION k READ ki, ko WRITE ik

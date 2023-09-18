@@ -1,5 +1,6 @@
 from neuron import h, gui
 from STN import STN
+from GPE import GPe
 from neuron.units import ms, mV, sec
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,13 +11,16 @@ h.load_file("stdrun.hoc")
 # Defining initial conditions
 h.celsius = 30
 h.v_init = -62.65 * mV
-h.tstop = 3 * sec
+h.tstop =  5 * sec
 h.dt = 0.01
 
 # Defining the cell(s)
-stn = STN(1, 0, 0, 0)
+stn = STN(1, 0, 0, 0, "stn")
 stn_area = stn.soma().area()
 recording_vec = h.Vector()
+
+gpe = GPe(1, 0, 0, 0, "gpe")
+gpe_area = gpe.soma().area()
 
 # Record spikes (for Freq. calculation)
 rec_netcon = h.NetCon(stn.soma()._ref_v, None)
@@ -27,21 +31,21 @@ rec_netcon.record(recording_vec)
 # To find out all h attributes, run: print(textwrap.fill(", ".join(dir(h))))
 
 # Insert this if you want to obtain results of depolarization current injection into cell.
-# stim = h.IClamp(stn.soma(0.5))
-# stim.delay = 2 * sec
-# stim.dur = 4 * sec
-# stim.amp = 79.522e-3
+# stim = h.IClamp(gpe.soma(0.5))
+# stim.delay = 0 * sec
+# stim.dur = 3 * sec
+# stim.amp = -0.5e-3
 
 # Ionic currents
-k_current = h.Vector().record(stn.soma().stn._ref_ik)
-caL_current = h.Vector().record(stn.soma().stn._ref_icaL)
-na_current = h.Vector().record(stn.soma().stn._ref_ina)
-atype_current = h.Vector().record(stn.soma().stn._ref_ikA)
-caT_current = h.Vector().record(stn.soma().stn._ref_icaT)
-ahp_current = h.Vector().record(stn.soma().stn._ref_ikAHP)
+# k_current = h.Vector().record(stn.soma().stn._ref_ik)
+# caL_current = h.Vector().record(stn.soma().stn._ref_icaL)
+# na_current = h.Vector().record(stn.soma().stn._ref_ina)
+# atype_current = h.Vector().record(stn.soma().stn._ref_ikA)
+# caT_current = h.Vector().record(stn.soma().stn._ref_icaT)
+# ahp_current = h.Vector().record(stn.soma().stn._ref_ikAHP)
 
 # Membrane potential
-soma_v = h.Vector().record(stn.soma()._ref_v)
+soma_v = h.Vector().record(gpe.soma()._ref_v)
 time = h.Vector().record(h._ref_t)
 # apc = h.APCount(stn.soma(0.5))
 

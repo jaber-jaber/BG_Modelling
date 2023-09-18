@@ -1,5 +1,7 @@
 from neuron import h
+from neuron.units import sec
 from STN import STN
+from GPE import GPe
 
 class Network():
     # Network of N STN cells arranged in a row.
@@ -10,10 +12,11 @@ class Network():
         self.channel_struct()
         self.exc_connections()
         self.inhb_connections()
+        self.set_netcons()
 
     def create_cells(self, N):
         self.stn_cells1 = []
-        self.stn_cells2 = []
+        self.gpe_cells = []
 
         for i in range(N):
             stn = STN(i, 0, 0, 0, 'stn')
@@ -21,9 +24,9 @@ class Network():
             self.stn_cells1.append(stn)
         
         for i in range(self.NumGPe):
-            stn = STN(i, 0, 0, 0, 'gpe')
-            stn._set_position(i*30, -20, 0)
-            self.stn_cells2.append(stn)
+            gpe = GPe(i, 0, 0, 0, 'gpe')
+            gpe._set_position(i*30, -20, 0)
+            self.gpe_cells.append(gpe)
 
     def channel_struct(self):
         """ Function to build all functional channels given N number of cells in the network.
@@ -38,7 +41,7 @@ class Network():
             numgpe = i * 3 # number of GPe cells
 
             # Create "channel" which is a list containing 1 STN cell and 3 GPe cells
-            channel = [j, self.stn_cells2[(numgpe-1)%self.NumGPe], self.stn_cells2[numgpe], self.stn_cells2[(numgpe+1)%self.NumGPe]]
+            channel = [j, self.gpe_cells[(numgpe-1)%self.NumGPe], self.gpe_cells[numgpe], self.gpe_cells[(numgpe+1)%self.NumGPe]]
             self.channels.append(channel)
 
     def exc_connections(self):
@@ -132,3 +135,36 @@ class Network():
         #         print(source, target)
             # Print a list of each source and its target in the NetCon list to validate
             # connections are correct
+    def set_netcons(self):
+        
+        syn_conductance = 3e-3
+        syn_delay = 1 * sec
+
+        for exc_netcon in self.exc_cons:
+            exc_netcon.delay = syn_delay
+            exc_netcon.weight[0] = syn_conductance
+            
+        for nb_netcon in self.nb_cons:
+            nb_netcon.delay = syn_delay
+            nb_netcon.weight[0] = syn_conductance
+            
+        for conlist in self.stn_cons:
+            for stn_con in conlist:
+                stn_con.delay = syn_delay
+                stn_con.weight[0] = syn_conductance
+
+        for nc_con in self.nclist:
+            nc_con.delay = syn_delay
+            nc_con.weight[0] = syn_conductance
+        
+        for pnc_con in self.pnclist:
+            pnc_con.delay = syn_delay
+            pnc_con.weight[0] = syn_conductance
+
+        for nnc_con in self.nnclist:
+            nnc_con.delay = syn_delay
+            nnc_con.weight[0] = syn_conductance
+
+        for prnc_con in self.prnclist:
+            prnc_con.delay = syn_delay
+            prnc_con.weight[0] = syn_conductance
