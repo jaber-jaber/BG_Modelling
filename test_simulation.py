@@ -32,9 +32,9 @@ rec_netcon.record(recording_vec)
 
 # Insert this if you want to obtain results of depolarization current injection into cell.
 # stim = h.IClamp(gpe.soma(0.5))
-# stim.delay = 0 * sec
-# stim.dur = 3 * sec
-# stim.amp = -0.5e-3
+# stim.delay = 1 * sec
+# stim.dur = 0.5 * sec
+# stim.amp = -10e-3
 
 # Ionic currents
 # k_current = h.Vector().record(stn.soma().stn._ref_ik)

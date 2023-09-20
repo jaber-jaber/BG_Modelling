@@ -137,34 +137,37 @@ class Network():
             # connections are correct
     def set_netcons(self):
         
-        syn_conductance = 3e-3
-        syn_delay = 1 * sec
+        stngpew = 0.11
+        gpegpew = 0.015
+        gpestnw = 0.11
+        
+        syn_delay = 0.1 * sec
 
         for exc_netcon in self.exc_cons:
             exc_netcon.delay = syn_delay
-            exc_netcon.weight[0] = syn_conductance
+            exc_netcon.weight[0] = stngpew
             
         for nb_netcon in self.nb_cons:
             nb_netcon.delay = syn_delay
-            nb_netcon.weight[0] = syn_conductance
+            nb_netcon.weight[0] = gpegpew
             
         for conlist in self.stn_cons:
             for stn_con in conlist:
                 stn_con.delay = syn_delay
-                stn_con.weight[0] = syn_conductance
+                stn_con.weight[0] = gpestnw
 
         for nc_con in self.nclist:
             nc_con.delay = syn_delay
-            nc_con.weight[0] = syn_conductance
+            nc_con.weight[0] = gpegpew
         
         for pnc_con in self.pnclist:
             pnc_con.delay = syn_delay
-            pnc_con.weight[0] = syn_conductance
+            pnc_con.weight[0] = gpegpew
 
         for nnc_con in self.nnclist:
             nnc_con.delay = syn_delay
-            nnc_con.weight[0] = syn_conductance
+            nnc_con.weight[0] = gpegpew
 
         for prnc_con in self.prnclist:
             prnc_con.delay = syn_delay
-            prnc_con.weight[0] = syn_conductance
+            prnc_con.weight[0] = gpegpew
