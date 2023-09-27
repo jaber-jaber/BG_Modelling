@@ -1,5 +1,5 @@
 from neuron import h
-from neuron.units import sec
+from neuron.units import sec, ms
 from STN import STN
 from GPE import GPe
 
@@ -137,37 +137,39 @@ class Network():
             # connections are correct
     def set_netcons(self):
         
-        stngpew = 0.11
-        gpegpew = 0.015
-        gpestnw = 0.11
+        stngpew = 0
+        gpegpew = 0
+        gpestnw = 0
         
-        syn_delay = 0.1 * sec
+        stngpedel = 0 * ms
+        gpegpedel = 0 * ms
+        gpestndel = 0 * ms
 
         for exc_netcon in self.exc_cons:
-            exc_netcon.delay = syn_delay
+            exc_netcon.delay = stngpedel
             exc_netcon.weight[0] = stngpew
             
         for nb_netcon in self.nb_cons:
-            nb_netcon.delay = syn_delay
+            nb_netcon.delay = gpegpedel
             nb_netcon.weight[0] = gpegpew
             
         for conlist in self.stn_cons:
             for stn_con in conlist:
-                stn_con.delay = syn_delay
+                stn_con.delay = gpestndel
                 stn_con.weight[0] = gpestnw
 
         for nc_con in self.nclist:
-            nc_con.delay = syn_delay
+            nc_con.delay = gpegpedel
             nc_con.weight[0] = gpegpew
         
         for pnc_con in self.pnclist:
-            pnc_con.delay = syn_delay
+            pnc_con.delay = gpegpedel
             pnc_con.weight[0] = gpegpew
 
         for nnc_con in self.nnclist:
-            nnc_con.delay = syn_delay
+            nnc_con.delay = gpegpedel
             nnc_con.weight[0] = gpegpew
 
         for prnc_con in self.prnclist:
-            prnc_con.delay = syn_delay
+            prnc_con.delay = gpegpedel
             prnc_con.weight[0] = gpegpew
