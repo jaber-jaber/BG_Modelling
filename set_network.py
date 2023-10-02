@@ -17,15 +17,16 @@ class Network():
     def create_cells(self, N):
         self.stn_cells1 = []
         self.gpe_cells = []
+        space = 30
 
         for i in range(N):
             stn = STN(i, 0, 0, 0, 'stn')
-            stn._set_position(i*30, 10, 0)
+            stn._set_position((i*3+1) * space, 10, 0)
             self.stn_cells1.append(stn)
-        
+
         for i in range(self.NumGPe):
             gpe = GPe(i, 0, 0, 0, 'gpe')
-            gpe._set_position(i*30, -20, 0)
+            gpe._set_position(i*space, -5000, 0)
             self.gpe_cells.append(gpe)
 
     def channel_struct(self):
@@ -137,9 +138,9 @@ class Network():
             # connections are correct
     def set_netcons(self):
         
-        stngpew = 0
-        gpegpew = 0
-        gpestnw = 0
+        stngpew = 1e-6
+        gpegpew = 1e-3
+        gpestnw = 1e-3
         
         stngpedel = 0 * ms
         gpegpedel = 0 * ms
