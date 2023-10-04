@@ -8,6 +8,7 @@ import pandas as pd
 import seaborn as sns
 from LFPsimpy import LfpElectrode
 from output import mem_potentials, plotmap
+import pickle
 
 h.load_file("stdrun.hoc")
 h.load_file("LFPsimpy-master/LFPsimpy-master/LFPsimpy/LFPsimpy.hoc")
@@ -16,45 +17,43 @@ h.celsius = 30
 h.v_init = -62.25 * mV
 h.tstop = 1000 * ms
 
-N = 50
+N = 100
 SSC_network = Network(N)
 stncells = SSC_network.stn_cells1
+gpecells = SSC_network.gpe_cells
 
 test = SSC_network.gpe_cells[1]
 test1 = stncells[1]
 
 # stim = h.IClamp(test1.soma(0.5))
-# stim.delay = 250 * ms
-# stim.dur = h.tstop - stim.delay
-# stim.amp = -10
+# stim.delay = 3000 * ms
+# stim.dur = 2000 * ms
+# stim.amp = -10e-3
 
 volstn = h.Vector().record(test1.soma(0.5)._ref_v)
 
 vol = h.Vector().record(test.soma(0.5)._ref_v)
 t = h.Vector().record(h._ref_t)
 
-spike_vecs = [h.Vector() for _ in range(N)]
 pot_vecs = [h.Vector().record(cell.soma(0.5)._ref_v) for cell in stncells]
-netcons = [h.NetCon(cell.soma(0.5)._ref_v, None, sec=cell.soma) for cell in stncells]
+# gpe_vecs = [h.Vector().record(cell.soma(0.5)._ref_v) for cell in gpecells]
 
-for con in netcons:
-    con.threshold = 36
-
-for vec, nc in zip(spike_vecs, netcons):
-    nc.record(vec)
 
 # ps = h.PlotShape(True)
 # ps.show(0)
 # ps.color(2, sec=stncells[int(N/2)].soma)
 
-electrode = LfpElectrode(x=4530, y=10, z=500, sampling_period=0.01, method="Point")
+# electrode = LfpElectrode(x=4530, y=10, z=500, sampling_period=0.01, method="Point")
 
 h.finitialize(h.v_init)
 h.run(h.tstop)
 
-# pots = mem_potentials(t, spike_vecs, pot_vecs)
+pots = mem_potentials(pot_vecs)
+# gpepots = mem_potentials(gpe_vecs, 'GPE_potentials.pkl')
 
-# plotmap(pots, t)
+
+plotmap(pots, t)
+
 # plt.figure(figsize=(10, 10))
 # sns.heatmap(firing_rates, cmap='hot')
 # plt.xlabel('Time (ms)')
