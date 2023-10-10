@@ -11,7 +11,7 @@ h.load_file("stdrun.hoc")
 # Defining initial conditions
 h.celsius = 30
 h.v_init = -62.65 * mV
-h.tstop =  5 * sec
+h.tstop =  1 * sec
 h.dt = 0.01
 
 # Defining the cell(s)
