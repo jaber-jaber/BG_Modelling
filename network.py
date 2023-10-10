@@ -15,7 +15,7 @@ h.load_file("LFPsimpy-master/LFPsimpy-master/LFPsimpy/LFPsimpy.hoc")
 
 h.celsius = 30
 h.v_init = -62.25 * mV
-h.tstop = 1000 * ms
+h.tstop = 10000 * ms
 
 N = 100
 SSC_network = Network(N)
@@ -42,17 +42,19 @@ pot_vecs = [h.Vector().record(cell.soma(0.5)._ref_v) for cell in stncells]
 # ps = h.PlotShape(True)
 # ps.show(0)
 # ps.color(2, sec=stncells[int(N/2)].soma)
+midcell = stncells[int(N/2)]
+midpoint = midcell.soma.x3d(1)
 
-# electrode = LfpElectrode(x=4530, y=10, z=500, sampling_period=0.01, method="Point")
+electrode = LfpElectrode(x=midpoint, y=10, z=10, sampling_period=0.01, method="Point")
 
 h.finitialize(h.v_init)
 h.run(h.tstop)
 
-pots = mem_potentials(pot_vecs)
+#pots = mem_potentials(pot_vecs)
 # gpepots = mem_potentials(gpe_vecs, 'GPE_potentials.pkl')
 
 
-plotmap(pots, t)
+# plotmap(pots, t)
 
 # plt.figure(figsize=(10, 10))
 # sns.heatmap(firing_rates, cmap='hot')
@@ -75,6 +77,6 @@ plotmap(pots, t)
 # plt.plot(t, volstn)
 # plt.show()
 
-# plt.figure(1)
-# plt.plot(electrode.times, electrode.values)
-# plt.show()
+plt.figure(1)
+plt.plot(electrode.times, electrode.values)
+plt.show()
