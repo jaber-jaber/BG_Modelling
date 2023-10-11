@@ -11,7 +11,7 @@ h.load_file("stdrun.hoc")
 # Defining initial conditions
 h.celsius = 30
 h.v_init = -62.65 * mV
-h.tstop =  1 * sec
+h.tstop =  10 * sec
 h.dt = 0.01
 
 # Defining the cell(s)
@@ -25,6 +25,14 @@ gpe_area = gpe.soma().area()
 # Record spikes (for Freq. calculation)
 rec_netcon = h.NetCon(stn.soma()._ref_v, None)
 rec_netcon.record(recording_vec)
+
+# Current train
+# stim = h.Ipulse1(stn.soma(0.5))
+# stim.delay = 1 * sec
+# stim.ton = 1 * ms
+# stim.toff = 7.35 * ms
+# stim.num = 500
+# stim.amp = 3
 
 # To check the mechanisms and point processes present in the STN soma:
 # print(stn.soma.psection()) # Tells you all the density mech values
@@ -45,7 +53,7 @@ rec_netcon.record(recording_vec)
 # ahp_current = h.Vector().record(stn.soma().stn._ref_ikAHP)
 
 # Membrane potential
-soma_v = h.Vector().record(gpe.soma()._ref_v)
+soma_v = h.Vector().record(stn.soma()._ref_v)
 time = h.Vector().record(h._ref_t)
 # apc = h.APCount(stn.soma(0.5))
 
