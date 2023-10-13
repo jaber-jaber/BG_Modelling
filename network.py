@@ -8,6 +8,7 @@ import pandas as pd
 import seaborn as sns
 from LFPsimpy import LfpElectrode
 from output import mem_potentials, plotmap
+from DBS import DBS
 import pickle
 
 h.load_file("stdrun.hoc")
@@ -15,7 +16,7 @@ h.load_file("LFPsimpy-master/LFPsimpy-master/LFPsimpy/LFPsimpy.hoc")
 
 h.celsius = 30
 h.v_init = -62.25 * mV
-h.tstop = 10000 * ms
+h.tstop = 3 * ms
 
 N = 100
 SSC_network = Network(N)
@@ -45,11 +46,14 @@ pot_vecs = [h.Vector().record(cell.soma(0.5)._ref_v) for cell in stncells]
 midcell = stncells[int(N/2)]
 midpoint = midcell.soma.x3d(1)
 
-electrode = LfpElectrode(x=midpoint, y=10, z=10, sampling_period=0.01, method="Point")
+# electrode = LfpElectrode(x=midpoint, y=10, z=10, sampling_period=0.01, method="Point")
 
 h.finitialize(h.v_init)
 h.run(h.tstop)
 
+
+dbs = DBS(stncells, 1, 2, 3)
+dbs.ext_voltage()
 #pots = mem_potentials(pot_vecs)
 # gpepots = mem_potentials(gpe_vecs, 'GPE_potentials.pkl')
 
@@ -77,6 +81,6 @@ h.run(h.tstop)
 # plt.plot(t, volstn)
 # plt.show()
 
-plt.figure(1)
-plt.plot(electrode.times, electrode.values)
-plt.show()
+# plt.figure(1)
+# plt.plot(electrode.times, electrode.values)
+# plt.show()

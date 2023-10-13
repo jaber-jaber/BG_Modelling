@@ -27,12 +27,12 @@ rec_netcon = h.NetCon(stn.soma()._ref_v, None)
 rec_netcon.record(recording_vec)
 
 # Current train
-# stim = h.Ipulse1(stn.soma(0.5))
-# stim.delay = 1 * sec
-# stim.ton = 1 * ms
-# stim.toff = 7.35 * ms
-# stim.num = 500
-# stim.amp = 3
+stim = h.Ipulse2(stn.soma(0.5))
+stim.delay = 1 * sec
+stim.dur = 5 * ms
+stim.per =  7.35 * ms
+stim.num = 1
+stim.amp = 0.1
 
 # To check the mechanisms and point processes present in the STN soma:
 # print(stn.soma.psection()) # Tells you all the density mech values
