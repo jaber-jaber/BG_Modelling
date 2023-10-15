@@ -8,7 +8,7 @@ import pandas as pd
 import seaborn as sns
 from LFPsimpy import LfpElectrode
 from output import mem_potentials, plotmap
-from DBS import DBS
+from DBS import generate_DBS_signal
 import pickle
 
 h.load_file("stdrun.hoc")
@@ -16,7 +16,7 @@ h.load_file("LFPsimpy-master/LFPsimpy-master/LFPsimpy/LFPsimpy.hoc")
 
 h.celsius = 30
 h.v_init = -62.25 * mV
-h.tstop = 3 * ms
+h.tstop = 3000 * ms
 
 N = 100
 SSC_network = Network(N)
@@ -32,6 +32,7 @@ test1 = stncells[1]
 # stim.amp = -10e-3
 
 volstn = h.Vector().record(test1.soma(0.5)._ref_v)
+e_vol = h.Vector().record(test1.soma(0.5)._ref_e_extracellular)
 
 vol = h.Vector().record(test.soma(0.5)._ref_v)
 t = h.Vector().record(h._ref_t)
@@ -46,18 +47,25 @@ pot_vecs = [h.Vector().record(cell.soma(0.5)._ref_v) for cell in stncells]
 midcell = stncells[int(N/2)]
 midpoint = midcell.soma.x3d(1)
 
-# electrode = LfpElectrode(x=midpoint, y=10, z=10, sampling_period=0.01, method="Point")
+DBS, DBS_times = generate_DBS_signal(0, 
+                                     h.tstop
+                                     , 0.01, -3.0, 200, 0.06, 0)
+DBS_vec = h.Vector().from_python(DBS)
+
+for cell in stncells[20:60]:
+    DBS_vec.play(cell.soma(0.5)._ref_v, h.dt)
+
+electrode = LfpElectrode(x=midpoint, y=10, z=0, sampling_period=0.01, method="Point")
 
 h.finitialize(h.v_init)
 h.run(h.tstop)
 
+# plt.figure(1)
+# plt.plot(DBS_times, DBS_vec)
+# plt.show()
 
-dbs = DBS(stncells, 1, 2, 3)
-dbs.ext_voltage()
-#pots = mem_potentials(pot_vecs)
+# pots = mem_potentials(pot_vecs)
 # gpepots = mem_potentials(gpe_vecs, 'GPE_potentials.pkl')
-
-
 # plotmap(pots, t)
 
 # plt.figure(figsize=(10, 10))
@@ -77,10 +85,13 @@ dbs.ext_voltage()
 
 # df.to_excel('lfp_measurement.xlsx', index=False)
 
-# plt.figure(2)
+# plt.figure(1)
 # plt.plot(t, volstn)
 # plt.show()
 
-# plt.figure(1)
-# plt.plot(electrode.times, electrode.values)
-# plt.show()
+plt.figure(1)
+plt.plot(electrode.times, electrode.values)
+plt.title('STN LFP')
+plt.xlabel('Time (ms)')
+plt.ylabel('mV')
+plt.show()

@@ -1,38 +1,56 @@
 from neuron import h, gui
 from math import sqrt, pi
+import numpy as np
+from scipy import signal
 
-class DBS:
-    def __init__(self, network, x, y, z):
-        self.elec_x = x
-        self.elec_y = y
-        self.elec_z = z
+def generate_DBS_signal(start_time, stop_time, dt
+                        , amplitude, freq, pulse_width, offset
+                        ):
+    times  = np.round(np.arange(start_time, stop_time, dt), 2)
+    tmp = np.arange(0, stop_time - start_time, dt)/1000.0
 
-        self.network = network
+    T = (1.0/freq)*1000.0
+    duty = (pulse_width/T)
 
-    def ext_voltage(self):
-        self.v_ext = []
-        sigma = 0.3
+    dbs_signal = offset + amplitude * (1.0+signal.square(2.0 * pi * freq * tmp, duty=duty))/2.0
+    dbs_signal[-1] = 0.0
+    
+    dbs_signal *= amplitude
 
-        x3d = h.x3d
-        y3d = h.y3d
-        z3d = h.z3d
+    return dbs_signal, times
+# class DBS:
+#     def __init__(self, network, x, y, z):
+#         self.elec_x = x
+#         self.elec_y = y
+#         self.elec_z = z
 
-        elec_x = self.elec_x
-        elec_y = self.elec_y
-        elec_z = self.elec_z
+#         self.network = network
 
-        for cell in self.network:
-            dbs_Stim = h.Ipulse2(cell.soma(0.5))
-            
-            x = (x3d(0, sec=cell.soma) + x3d(1, sec=cell.soma)) / 2
-            y = (y3d(0, sec=cell.soma) + y3d(1, sec=cell.soma)) / 2
-            z = (z3d(0, sec=cell.soma) + z3d(1, sec=cell.soma)) / 2
+    # def ext_voltage(self):
+    #     self.v_ext = []
+    #     sigma = 0.3
 
-            dis = sqrt(
-                (elec_x - x) ** 2 +
-                (elec_y - y) ** 2 + 
-                (elec_z - z) ** 2
-            )
+    #     x3d = h.x3d
+    #     y3d = h.y3d
+    #     z3d = h.z3d
 
-            vext =  1 / (4 * pi * dis * sigma)
-            self.v_ext.append(vext)
+    #     elec_x = self.elec_x
+    #     elec_y = self.elec_y
+    #     elec_z = self.elec_z
+
+    #     for cell in self.network:
+    #         dbs_Stim = h.Ipulse2(cell.soma(0.5))
+    #         dbs_Stim.amp = 1
+    #         dbs_Stim.dur = 200
+    #         dbs_Stim.per = 100
+    #         dbs_Stim.delay = 50
+
+    #         x = (x3d(0, sec=cell.soma) + x3d(1, sec=cell.soma)) / 2
+    #         y = (y3d(0, sec=cell.soma) + y3d(1, sec=cell.soma)) / 2
+    #         z = (z3d(0, sec=cell.soma) + z3d(1, sec=cell.soma)) / 2
+
+    #         dis = sqrt(
+    #             (elec_x - x) ** 2 +
+    #             (elec_y - y) ** 2 + 
+    #             (elec_z - z) ** 2
+    #         )

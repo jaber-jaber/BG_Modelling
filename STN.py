@@ -24,13 +24,14 @@ class STN(Cell):
         # self.stim.amp = 10
 
         # Area = 1590.43 um2
-    
+
         # Defining electrophysiological properties
         self.soma.insert('myions')
         # h("ki0_k_ion = 105")
         # h("ko0_k_ion = 3")
         # h("nao0_na_ion = 108")
         # h("nai0_na_ion = 10")
+        self.soma.insert('extracellular')
 
         self.soma.insert('stn')
         h("cai0_ca_ion = 5e-6") # Initial intracellular Ca concentration

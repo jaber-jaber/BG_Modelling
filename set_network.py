@@ -138,13 +138,13 @@ class Network():
             # connections are correct
     def set_netcons(self):
         
-        stngpew = 1e-6
-        gpegpew = 1e-3
-        gpestnw = 1e-3
+        stngpew = 0.11
+        gpegpew = 0.015
+        gpestnw = 0.11
         
-        stngpedel = 0 * ms
-        gpegpedel = 0 * ms
-        gpestndel = 0 * ms
+        stngpedel = 4 * ms
+        gpegpedel = 4 * ms
+        gpestndel = 3 * ms
 
         for exc_netcon in self.exc_cons:
             exc_netcon.delay = stngpedel

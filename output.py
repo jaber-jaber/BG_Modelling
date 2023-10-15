@@ -23,5 +23,8 @@ def plotmap(pots, t, filename=None, pickle=False):
             pots = pickle.load(f)
 
     df = pd.DataFrame(pots, columns=t)
+    plt.title('Heatmap of Cell Network')
     sns.heatmap(df, cmap='viridis', vmin=-63, vmax=40)
+    plt.xlabel('Time (ms)')
+    plt.ylabel('Cell #')
     plt.show()
