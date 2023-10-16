@@ -21,12 +21,12 @@ class Network():
 
         for i in range(N):
             stn = STN(i, 0, 0, 0, 'stn')
-            stn._set_position((i*3+1) * space, 10, 0)
+            stn._set_position((i*3+1) * space, 0, 0)
             self.stn_cells1.append(stn)
 
         for i in range(self.NumGPe):
             gpe = GPe(i, 0, 0, 0, 'gpe')
-            gpe._set_position(i*space, -1000, 0)
+            gpe._set_position(i*space, -50, 0)
             self.gpe_cells.append(gpe)
 
     def channel_struct(self):

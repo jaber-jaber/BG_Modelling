@@ -4,7 +4,7 @@ import textwrap
 
 class STN(Cell):
     name = "STN"
-    
+
     def create_sections(self):
         self.soma = h.Section(name='soma', cell=self)
 
@@ -17,12 +17,10 @@ class STN(Cell):
         self.soma.nseg = 1
         self.soma.cm = 1
         
-        # Bias current
-        # self.stim = h.IClamp(0.5, sec=self.soma)
-        # self.stim.delay = 0
-        # self.stim.dur = 1e9
-        # self.stim.amp = 10
-
+        self.stim = h.IClamp(0.5, sec=self.soma)
+        self.stim.delay = 0
+        self.stim.dur = 1e9
+        self.stim.amp = 0
         # Area = 1590.43 um2
 
         # Defining electrophysiological properties

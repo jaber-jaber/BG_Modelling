@@ -227,7 +227,6 @@ BREAKPOINT {
 	icaL   = gcalbar * c*c*d1*d2 * (v - eca)
 	ica=icaT+icaL
 	ilk = gl * (v - el)
-
 }
 
 DERIVATIVE states {   
