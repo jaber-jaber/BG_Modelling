@@ -21,6 +21,7 @@ def compute_transfer_resistance(list_electrodes, list_cells):
         # Calculate tr for each distance and append the resulting array to tr_arrays
         tr_arrays.append(1 / (4 * np.pi * sigma * distances))
 
+
     summed_transfer_resistances = np.sum(tr_arrays, axis=0)
 
     return summed_transfer_resistances

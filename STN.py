@@ -18,7 +18,7 @@ class STN(Cell):
         self.soma.cm = 1
         
         self.stim = h.IClamp(0.5, sec=self.soma)
-        self.stim.delay = 0
+        self.stim.delay = 1000
         self.stim.dur = 1e9
         self.stim.amp = 0
         # Area = 1590.43 um2

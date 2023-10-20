@@ -11,7 +11,7 @@ h.load_file("stdrun.hoc")
 # Defining initial conditions
 h.celsius = 30
 h.v_init = -62.65 * mV
-h.tstop = 1500 * ms
+h.tstop = 3000 * ms
 h.dt = 0.01
 
 # Defining the cell(s)
@@ -48,7 +48,7 @@ rec_netcon.record(recording_vec)
 # ahp_current = h.Vector().record(stn.soma().stn._ref_ikAHP)
 
 # Membrane potential
-soma_v = h.Vector().record(gpe.soma()._ref_v)
+soma_v = h.Vector().record(stn.soma()._ref_v)
 time = h.Vector().record(h._ref_t)
 # apc = h.APCount(stn.soma(0.5))
 
@@ -61,10 +61,12 @@ f = (len(rec_data) / (h.tstop))*1000
 
 print("{} Hz".format(f))
 # print(apc.thresh) # Threshold is -20 at this temp
-
+time_list = time.to_python()
+voltage_list = soma_v.to_python()
 
 vtime = plt.figure(1)
-plt.plot(time, soma_v, color='k')
+plt.plot(time_list[200000:300000], voltage_list[200000:300000], color='k')
+plt.title("STN Cell Membrane Potential vs Time")
 plt.xlabel("Time (s)")
 plt.ylabel("mV")
 vtime.show()

@@ -17,7 +17,7 @@ h.load_file("LFPsimpy-master/LFPsimpy-master/LFPsimpy/LFPsimpy.hoc")
 
 h.celsius = 30
 h.v_init = -62.25 * mV
-h.tstop = 1500 * ms
+h.tstop = 5000 * ms
 h.dt = 0.01
 
 N = 100
@@ -25,7 +25,7 @@ SSC_network = Network(N)
 stncells = SSC_network.stn_cells1
 gpecells = SSC_network.gpe_cells
 
-testval = 1
+testval = 50
 
 gpe1 = SSC_network.gpe_cells[testval]
 stn1 = stncells[testval]
@@ -34,10 +34,8 @@ stn1 = stncells[testval]
 # stim.dur = 2000 * ms
 # stim.amp = -10e-3
 t = h.Vector().record(h._ref_t)
-# gpe_vecs = [h.Vector().record(cell.soma(0.5)._ref_v) for cell in gpecells]
-# volstn1 = h.Vector().record(stn1.soma(0.5)._ref_v)
-# volgpe1 = h.Vector().record(gpe1.soma(0.5)._ref_v)
-
+volstn1 = h.Vector().record(stn1.soma(0.5)._ref_v)
+volgpe1 = h.Vector().record(gpe1.soma(0.5)._ref_v)
 # ps = h.PlotShape(True)
 # ps.show(0)
 # ps.color(2, sec=stncells[int(N/2)].soma)
@@ -54,11 +52,11 @@ stim_vecs = []
 signals = []
 
 # DBS Parameters
-start = 0
-stop = 500
+start = 1000
+stop = h.tstop
 dt = h.dt
-amp = -10
-freq = 130
+amp = 2.5
+freq = 250
 pw = 0.06
 offset = 0
 
@@ -71,8 +69,10 @@ for n, cell in enumerate(stncells):
     stim_vec = sig_vec.play(cell.stim, cell.stim._ref_amp, h.dt)
     stim_vecs.append(stim_vec)
 
+test_DBS = signals[50][0]
+test_DBS_times = signals[50][1]
 # pot_vecs = [h.Vector().record(cell.soma(0.5)._ref_v) for cell in stncells]
-
+# gpe_vecs = [h.Vector().record(cell.soma(0.5)._ref_v) for cell in gpecells]
 c1_electrode = LfpElectrode(x=c1_pos, y=0, z=0, sampling_period=0.01, method="Point")
 c2_electrode = LfpElectrode(x=c2_pos, y=0, z=0, sampling_period=0.01, method="Point")
 
@@ -81,10 +81,9 @@ h.continuerun(h.tstop)
 
 diff_recording = [a - b for a, b in zip(c2_electrode.values, c1_electrode.values)]
 
-
 # pots = mem_potentials(pot_vecs)
 
-with open('pickles/STN_LFP_130Hz_DBS', 'wb') as f:
+with open('pickles/250Hz_2.5_5sec.pkl', 'wb') as f:
         pickle.dump(diff_recording, f)
 
 # plotmap(pots, t)
@@ -106,11 +105,22 @@ with open('pickles/STN_LFP_130Hz_DBS', 'wb') as f:
 
 # df.to_excel('lfp_measurement.xlsx', index=False)
 
+# plt.figure(1)
+# plt.plot(test_DBS_times, test_DBS, color='k')
+# plt.title('DBS Square Wave at Cell #50')
+# plt.xlabel('Time (ms)')
+# plt.ylabel('Current (nA)')
+# plt.show()
+
+# plt.figure()
+# plt.plot(t, volstn1)
+# plt.show()
+
 # fig, axs = plt.subplots(2)
-# axs[0].plot(t, volstn1)
+# axs[0].plot(t, volstn1, color='k')
 # axs[0].set_title('STN Cells #1 Membrane Potential vs Time')
 
-# axs[1].plot(t, volgpe1)
+# axs[1].plot(t, volgpe1, color='k')
 # axs[1].set_title('GPe Cells #1 Membrane Potential vs Time')
 
 # for ax in axs.flat:
@@ -121,11 +131,11 @@ with open('pickles/STN_LFP_130Hz_DBS', 'wb') as f:
 
 # plt.show()
 
-# plt.figure(1)
-# plt.plot(c1_electrode.times, diff_recording, color='k')
+plt.figure(1)
+plt.plot(c1_electrode.times, diff_recording, color='k')
 
-# plt.title('STN Local Field Potentials')
-# plt.xlabel('Time (ms)')
-# plt.ylabel('mV')
+plt.title('STN Local Field Potentials')
+plt.xlabel('Time (ms)')
+plt.ylabel('mV')
 
-# plt.show()
+plt.show()

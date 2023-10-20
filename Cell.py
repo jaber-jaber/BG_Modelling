@@ -30,7 +30,7 @@ class Cell():
         # or h.Section(name='dendrite', cell=self)
         
         raise NotImplementedError("Sections were not created.")
-
+    
     def define_geometry(self):
         # Set the 3D geometry of the cell.
         raise NotImplementedError("Cell geometries have not been created.")
@@ -42,7 +42,6 @@ class Cell():
     def build_subsets(self):
         self.all = h.SectionList()
         self.all.wholetree(sec=self.soma)
-
 
     def _set_position(self, x, y, z):
         for sec in self.all:

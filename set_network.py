@@ -143,7 +143,7 @@ class Network():
         gpestnw = 0.11
         
         stngpedel = 4 * ms
-        gpegpedel = 4 * ms
+        gpegpedel = 3 * ms
         gpestndel = 3 * ms
 
         for exc_netcon in self.exc_cons:
