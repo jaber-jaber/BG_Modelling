@@ -15,15 +15,14 @@ h.tstop = 3000 * ms
 h.dt = 0.01
 
 # Defining the cell(s)
-stn = STN(1, 0, 0, 0, "stn")
-stn_area = stn.soma().area()
 recording_vec = h.Vector()
 
 gpe = GPe(1, 0, 0, 0, "gpe")
+gpe2 = GPe(2, 0, 0, 0, "gpe")
 gpe_area = gpe.soma().area()
 
 # Record spikes (for Freq. calculation)
-rec_netcon = h.NetCon(stn.soma()._ref_v, None)
+rec_netcon = h.NetCon(gpe.soma()._ref_v, None)
 rec_netcon.record(recording_vec)
 
 # Current train
@@ -34,12 +33,21 @@ rec_netcon.record(recording_vec)
 # To find out all h attributes, run: print(textwrap.fill(", ".join(dir(h))))
 
 # Insert this if you want to obtain results of depolarization current injection into cell.
-# stim = h.IClamp(gpe.soma(0.5))
-# stim.delay = 1 * sec
-# stim.dur = 0.5 * sec
-# stim.amp = -10e-3
+stim1 = h.IClamp(gpe.soma(0.5))
+stim1.delay = 1 * sec
+stim1.dur = 1 * sec
+stim1.amp = 25e-3
 
-# Ionic currents
+stim2 = h.IClamp(gpe2.soma(0.5))
+stim2.delay = 1 * sec
+stim2.dur = 1 * sec
+stim2.amp = -25e-3
+
+# stim3 = h.IClamp(stn3.soma(0.5))
+# stim3.delay = 1 * sec
+# stim3.dur = 1 * sec
+# stim3.amp = 0.0954
+# I3onic currents
 # k_current = h.Vector().record(stn.soma().stn._ref_ik)
 # caL_current = h.Vector().record(stn.soma().stn._ref_icaL)
 # na_current = h.Vector().record(stn.soma().stn._ref_ina)
@@ -48,7 +56,9 @@ rec_netcon.record(recording_vec)
 # ahp_current = h.Vector().record(stn.soma().stn._ref_ikAHP)
 
 # Membrane potential
-soma_v = h.Vector().record(stn.soma()._ref_v)
+soma_v = h.Vector().record(gpe.soma()._ref_v)
+soma_v2 = h.Vector().record(gpe2.soma()._ref_v)
+# soma_v3 = h.Vector().record(stn3.soma()._ref_v)
 time = h.Vector().record(h._ref_t)
 # apc = h.APCount(stn.soma(0.5))
 
@@ -61,23 +71,40 @@ f = (len(rec_data) / (h.tstop))*1000
 
 print("{} Hz".format(f))
 # print(apc.thresh) # Threshold is -20 at this temp
-time_list = time.to_python()
-voltage_list = soma_v.to_python()
+# time_list = time.to_python()
+# voltage_list = soma_v.to_python()
 
-vtime = plt.figure(1)
-plt.plot(time_list[200000:300000], voltage_list[200000:300000], color='k')
-plt.title("STN Cell Membrane Potential vs Time")
-plt.xlabel("Time (s)")
-plt.ylabel("mV")
-vtime.show()
+
+fig, axs = plt.subplots(2, 1)
+fig.suptitle('GPe Cell Model')
+
+axs[0].plot(time, soma_v, color='k')
+axs[1].plot(time, soma_v2, color='k')
+
+for ax in axs.flat:
+    ax.set(xlabel='Time (ms)', ylabel='mV')
+
+for ax in axs.flat:
+    ax.label_outer()
+
+plt.show()
+
+# vtime = plt.figure(1)
+# plt.plot(time, soma_v, color='k')
+# plt.title("GPe Cell Membrane Potential vs Time")
+# plt.xlabel("Time (s)")
+# plt.ylabel("mV")
+# vtime.show()
 
 # ctime = plt.figure(2)
-# plt.plot(time/1000, k_current)
-# plt.plot(time/1000, caL_current)
-# plt.plot(time/1000, na_current)
-# plt.plot(time/1000, atype_current)
-# plt.plot(time/1000, caT_current)
-# plt.plot(time/1000, ahp_current)
+# plt.plot(time, k_current)
+# plt.plot(time, caL_current)
+# plt.plot(time, na_current)
+# plt.plot(time, atype_current)
+# plt.plot(time, caT_current)
+# plt.plot(time, ahp_current)
+# plt.xlabel('Time (ms)')
+# plt.ylabel('Current Density (uA/cm2)')
 # plt.legend(["Potassium current", "L-type calcium current", "Sodium current", "A-type Potassium current", "T-type calcium current", "Calcium-dependent Potassium current"])
 # ctime.show()
 

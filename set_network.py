@@ -26,7 +26,7 @@ class Network():
 
         for i in range(self.NumGPe):
             gpe = GPe(i, 0, 0, 0, 'gpe')
-            gpe._set_position(i*space, -50, 0)
+            gpe._set_position(i*space, -500, 0)
             self.gpe_cells.append(gpe)
 
     def channel_struct(self):
