@@ -137,7 +137,7 @@ class Network():
             # Print a list of each source and its target in the NetCon list to validate
             # connections are correct
     def set_netcons(self):
-        
+        """ Set netcon weights and delays. """
         stngpew = 0.11
         gpegpew = 0.015
         gpestnw = 0.11

@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def calculate_distances(start, end):
+    """ Calculate the Euclidean distance of the neuron soma from electrodes that are
+    arranged between start and end. """
 
     x = np.arange(start, end + 1)
     
@@ -12,6 +14,9 @@ def calculate_distances(start, end):
     return list_electrodes, list_cells
 
 def compute_transfer_resistance(list_electrodes, list_cells):
+    """ Compute the transfer resistance between the list of electrodes
+    and each cell. Each electrode produces its own array of amplitude scaling values (tran. resistance)"""
+    
     tr_arrays = []
     sigma = 0.3
 
@@ -21,27 +26,6 @@ def compute_transfer_resistance(list_electrodes, list_cells):
         # Calculate tr for each distance and append the resulting array to tr_arrays
         tr_arrays.append(1 / (4 * np.pi * sigma * distances))
 
-    # plt.figure()
-    # for x in np.arange(0, 10):
-    #     plt.plot(distances, tr_arrays[x], label='Electrode {x}'.format(x=x))
-
-    # plt.legend(loc='best')
-    # plt.grid(True)
-    # plt.xlabel('Cell Position')
-    # plt.ylabel('Amplitude')
-    # plt.show()
-
     summed_transfer_resistances = np.sum(tr_arrays, axis=0)
 
     return summed_transfer_resistances
-
-# list_electrodes, list_cells = calculate_distances(45, 55)
-# summed_tr = compute_transfer_resistance(list_electrodes, list_cells)
-# distances = [(i * 3 + 1) * 30 for i in range(100)]
-
-# plt.figure()
-# plt.plot(distances, summed_tr, color='k')
-# plt.grid(True)
-# plt.xlabel('Cell Position')
-# plt.ylabel('Amplitude')
-# plt.show()

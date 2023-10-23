@@ -10,6 +10,8 @@ from DBS import generate_DBS_signal
 from point_source import calculate_distances, compute_transfer_resistance
 import pickle
 
+""" Run to produce rasters of N STN and GPe cells. """
+
 h.load_file("stdrun.hoc")
 
 h.celsius = 30

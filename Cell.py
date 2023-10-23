@@ -56,18 +56,14 @@ class Cell():
         self.x, self.y, self.z = x, y, z
 
     def shape_3D(self):
+        # Defining 3D shape using pointer to soma section.
+
         soma_section = h.SectionRef(sec=self.soma)
         
         len1 = soma_section.sec.L
         soma_section.sec.pt3dclear()
         soma_section.sec.pt3dadd(0, 0, 0, soma_section.sec.diam)
         soma_section.sec.pt3dadd(len1, 0, 0, soma_section.sec.diam)
-        # len1 = self.soma.L
-        # self.soma.push()
-        # h.pt3dclear()
-        # h.pt3dadd(0, 0, 0, self.soma.diam)
-        # h.pt3dadd(len1, 0, 0, self.soma.diam)
-        # h.pop_section()
 
     def create_synapse(self, cell_type):
 

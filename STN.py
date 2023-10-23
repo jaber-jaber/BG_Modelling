@@ -1,7 +1,6 @@
 from neuron import h
 from Cell import Cell
 import textwrap
-
 class STN(Cell):
     name = "STN"
 
@@ -25,10 +24,6 @@ class STN(Cell):
 
         # Defining electrophysiological properties
         self.soma.insert('myions')
-        # h("ki0_k_ion = 105")
-        # h("ko0_k_ion = 3")
-        # h("nao0_na_ion = 108")
-        # h("nai0_na_ion = 10")
         self.soma.insert('extracellular')
 
         self.soma.insert('stn')
